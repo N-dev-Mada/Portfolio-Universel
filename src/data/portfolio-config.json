@@ -1,0 +1,319 @@
+{
+  "version": 1,
+  "meta": {
+    "title": "Portfolio — Alexandre Laurent | Concepteur Web & Fullstack",
+    "description": "Portfolio de développeur web senior et concepteur de solutions modernes. Expertise frontend, backend et architectures cloud performantes.",
+    "lang": "fr"
+  },
+  "theme": {
+    "preset": "violet-cyan",
+    "font": "Plus Jakarta Sans",
+    "radius": "xl",
+    "ambientGlow": true
+  },
+  "identity": {
+    "name": "Alexandre Laurent",
+    "initials": "AL",
+    "role": "Développeur Fullstack",
+    "logoImage": "",
+    "avatar": ""
+  },
+  "nav": {
+    "ctaLabel": "Me contacter",
+    "ctaTarget": "contact",
+    "mobileCtaLabel": "Démarrer un projet"
+  },
+  "sections": [
+    { "id": "accueil", "type": "hero", "label": "Accueil", "enabled": true },
+    { "id": "competences", "type": "skills", "label": "Compétences", "enabled": true },
+    { "id": "projets", "type": "projects", "label": "Projets", "enabled": true },
+    { "id": "parcours", "type": "experience", "label": "Parcours", "enabled": true },
+    { "id": "temoignages", "type": "testimonials", "label": "Témoignages", "enabled": false },
+    { "id": "contact", "type": "contact", "label": "Contact", "enabled": true }
+  ],
+  "hero": {
+    "badgeText": "Disponible pour de nouveaux projets & missions",
+    "badgePulse": true,
+    "title": "Développeur Web &",
+    "titleHighlight": "Concepteur de Solutions",
+    "subtitle": "Je conçois des applications web modernes, robustes et hautement performantes, alliant architectures scalables et expériences utilisateurs soignées. J'accompagne les équipes ambitieuses de l'idée initiale jusqu'à la mise en production.",
+    "ctas": [
+      { "label": "Voir mes réalisations", "target": "projets", "icon": "layers", "variant": "primary" },
+      { "label": "Me contacter", "target": "contact", "icon": "mail", "variant": "ghost" }
+    ],
+    "stats": [
+      { "value": "6+", "label": "Années d'expérience" },
+      { "value": "35+", "label": "Projets livrés" },
+      { "value": "99.8%", "label": "Disponibilité & satisfaction" }
+    ],
+    "showcase": {
+      "type": "terminal",
+      "image": "",
+      "imageCaption": "",
+      "terminalTitle": "alexandre@dev-studio: ~",
+      "terminalTag": "TypeScript 5.8",
+      "terminalLines": [
+        { "text": "const architecte = {", "tone": "keyword" },
+        { "text": "  nom: \"Alexandre Laurent\",", "tone": "string" },
+        { "text": "  role: \"Senior Fullstack Engineer\",", "tone": "string" },
+        { "text": "  stack: [\"Next.js\", \"TypeScript\", \"Node.js\"],", "tone": "string" },
+        { "text": "  focus: \"Performance & Clean UI/UX\",", "tone": "string" },
+        { "text": "  disponible: true", "tone": "number" },
+        { "text": "};", "tone": "keyword" },
+        { "text": "", "tone": "default" },
+        { "text": "// Prêt à bâtir votre prochaine vision web", "tone": "muted" },
+        { "text": "await architecte.initierCollaboration();", "tone": "accent" }
+      ],
+      "terminalFooterLeft": "Tests unitaires : 100% passés",
+      "terminalFooterRight": "Core Web Vitals : 99",
+      "floatingBadges": [
+        { "icon": "zap", "title": "Ultra réactif", "subtitle": "Chargement < 0.8s", "accent": 2 },
+        { "icon": "shield-check", "title": "Code de qualité", "subtitle": "Clean Architecture", "accent": 1 }
+      ]
+    }
+  },
+  "skills": {
+    "badgeIcon": "sparkles",
+    "badgeText": "Savoir-faire technique",
+    "title": "Compétences &",
+    "titleHighlight": "Technologies",
+    "subtitle": "Un écosystème d'outils éprouvés pour construire des applications résilientes, rapides et élégantes.",
+    "showLevels": true,
+    "categories": [
+      {
+        "icon": "layout",
+        "badge": "Frontend",
+        "title": "Interface & Expérience Client",
+        "description": "Création d'interfaces réactives, accessibles (a11y) et intuitives avec rendu optimisé.",
+        "accent": 1,
+        "items": [
+          { "name": "React / Next.js 14+", "level": 95, "levelLabel": "Avancé" },
+          { "name": "TypeScript", "level": 92, "levelLabel": "Avancé" },
+          { "name": "Tailwind CSS & Design Systems", "level": 96, "levelLabel": "Expert" },
+          { "name": "Vue.js / Nuxt", "level": 85, "levelLabel": "Confirmé" }
+        ],
+        "tags": ["SSR / SSG", "State Management", "Core Web Vitals", "Micro-animations"]
+      },
+      {
+        "icon": "server",
+        "badge": "Backend",
+        "title": "Architecture Serveur & APIs",
+        "description": "Conception de services sécurisés, performants et capables de monter en charge.",
+        "accent": 2,
+        "items": [
+          { "name": "Node.js / Express / NestJS", "level": 90, "levelLabel": "Avancé" },
+          { "name": "APIs RESTful & GraphQL", "level": 92, "levelLabel": "Avancé" },
+          { "name": "Python / FastAPI", "level": 84, "levelLabel": "Confirmé" },
+          { "name": "WebSockets & Temps Réel", "level": 88, "levelLabel": "Avancé" }
+        ],
+        "tags": ["Microservices", "JWT / OAuth", "Rate Limiting"]
+      },
+      {
+        "icon": "database",
+        "badge": "Data & DevOps",
+        "title": "Bases de Données & Outils",
+        "description": "Modélisation de données optimale, conteneurisation et pipelines de déploiement continu.",
+        "accent": 3,
+        "items": [
+          { "name": "PostgreSQL / Prisma / Drizzle", "level": 90, "levelLabel": "Avancé" },
+          { "name": "MongoDB / Redis (Cache)", "level": 86, "levelLabel": "Avancé" },
+          { "name": "Docker & Conteneurisation", "level": 85, "levelLabel": "Confirmé" },
+          { "name": "CI/CD (GitHub Actions) & Cloud", "level": 82, "levelLabel": "Confirmé" }
+        ],
+        "tags": ["Git / GitHub", "Vercel & AWS", "Indexation SQL"]
+      }
+    ]
+  },
+  "projects": {
+    "badgeIcon": "folder-git-2",
+    "badgeText": "Portfolio sélectif",
+    "title": "Projets",
+    "titleHighlight": "Vedettes",
+    "subtitle": "Une sélection de réalisations complètes, du prototype interactif au déploiement en production.",
+    "layout": "grid-2",
+    "filtersEnabled": true,
+    "filters": [
+      { "id": "fullstack", "label": "Fullstack" },
+      { "id": "frontend", "label": "Frontend" },
+      { "id": "backend", "label": "API & Cloud" }
+    ],
+    "items": [
+      {
+        "title": "CloudPulse — Plateforme d'Observabilité",
+        "category": "fullstack",
+        "categoryLabel": "Fullstack",
+        "description": "Plateforme SaaS de surveillance d'infrastructures cloud en temps réel. Analyse télémétrique, gestion de seuils critiques et alertes automatisées via WebSockets.",
+        "image": "",
+        "accent": 1,
+        "tags": ["Next.js 14", "TypeScript", "PostgreSQL", "Prisma", "WebSockets"],
+        "links": [
+          { "label": "Démo en direct", "url": "", "icon": "external-link" },
+          { "label": "Code source", "url": "", "icon": "github" }
+        ]
+      },
+      {
+        "title": "NovaCommerce — E-Commerce Headless",
+        "category": "frontend",
+        "categoryLabel": "Frontend",
+        "description": "Boutique en ligne moderne ultra-rapide avec panier optimisé, navigation instantanée, filtres dynamiques multicritères et intégration checkout Stripe sécurisée.",
+        "image": "",
+        "accent": 2,
+        "tags": ["React", "Tailwind CSS", "Zustand", "Stripe Elements", "Algolia"],
+        "links": [
+          { "label": "Démo en direct", "url": "", "icon": "external-link" },
+          { "label": "Code source", "url": "", "icon": "github" }
+        ]
+      },
+      {
+        "title": "Synapse — Passerelle d'APIs Sécurisée",
+        "category": "backend",
+        "categoryLabel": "API & Cloud",
+        "description": "Microservice gateway haute disponibilité avec validation de tokens, limitation de débit distribuée (Redis token bucket), logs télémétriques et documentation OpenAPI.",
+        "image": "",
+        "accent": 3,
+        "tags": ["Node.js", "TypeScript", "Redis", "Docker", "OpenAPI 3.0"],
+        "links": [
+          { "label": "Documentation API", "url": "", "icon": "external-link" },
+          { "label": "Code source", "url": "", "icon": "github" }
+        ]
+      },
+      {
+        "title": "TaskFlow Studio — Gestion Collaborative",
+        "category": "fullstack",
+        "categoryLabel": "Fullstack",
+        "description": "Application de gestion de projet type tableau Kanban avec collaboration en temps réel, glisser-déposer fluide, attribution d'équipes et notifications en direct.",
+        "image": "",
+        "accent": 1,
+        "tags": ["React", "TypeScript", "Tailwind CSS", "Supabase", "dnd kit"],
+        "links": [
+          { "label": "Démo en direct", "url": "", "icon": "external-link" },
+          { "label": "Code source", "url": "", "icon": "github" }
+        ]
+      }
+    ]
+  },
+  "experience": {
+    "badgeIcon": "milestone",
+    "badgeText": "Carrière & Évolution",
+    "title": "Expérience &",
+    "titleHighlight": "Parcours",
+    "subtitle": "Une trajectoire tournée vers la rigueur technique, le leadership et l'impact produit.",
+    "items": [
+      {
+        "title": "Lead Développeur Frontend & Architecte Web",
+        "organization": "TechNova Solutions • CDI (Paris / Télétravail)",
+        "period": "2023 — Présent",
+        "description": "Pilotage de la refonte architecturale d'une suite SaaS B2B utilisée par plus de 80 000 utilisateurs actifs quotidiens. Encadrement d'une équipe de 5 développeurs et gain de 45% sur le First Contentful Paint.",
+        "accent": 1,
+        "tags": ["Next.js", "Micro-frontend", "CI/CD", "Mentorat"]
+      },
+      {
+        "title": "Développeur Fullstack Senior",
+        "organization": "Digital Horizon Studio • CDI (Lyon)",
+        "period": "2021 — 2023",
+        "description": "Conception et livraison de plateformes web sur mesure pour des startups et grands comptes. Développement d'APIs REST robustes en Node.js/TypeScript et intégration d'interfaces réactives complexes.",
+        "accent": 2,
+        "tags": ["React", "Node.js", "PostgreSQL", "Docker"]
+      },
+      {
+        "title": "Développeur Web & Interfaces",
+        "organization": "Pulse Interactive • Agence Digitale",
+        "period": "2019 — 2021",
+        "description": "Intégration d'expériences interactives haut de gamme, applications monopages (SPA) et animations fluides. Focus sur le SEO technique et la conformité WCAG AA.",
+        "accent": 3,
+        "tags": ["JavaScript ES6+", "Vue.js", "Tailwind", "SEO & a11y"]
+      },
+      {
+        "title": "Master en Ingénierie du Logiciel",
+        "organization": "École Nationale Supérieure d'Informatique • Mention Très Bien",
+        "period": "2017 — 2019",
+        "description": "Spécialisation en architectures logicielles distribuées, sécurité des applications web, méthodologies agiles (Scrum) et algorithmique avancée.",
+        "accent": 3,
+        "tags": []
+      }
+    ]
+  },
+  "testimonials": {
+    "badgeIcon": "quote",
+    "badgeText": "Ils m'ont fait confiance",
+    "title": "Témoignages &",
+    "titleHighlight": "Retours clients",
+    "subtitle": "Ce que disent les équipes avec lesquelles j'ai collaboré.",
+    "items": [
+      {
+        "quote": "Une rigueur technique rare et une vraie capacité à traduire des enjeux métier en architecture claire. La refonte a tenu tous ses délais.",
+        "author": "Camille Dubois",
+        "role": "CTO — TechNova Solutions",
+        "avatar": "",
+        "rating": 5
+      },
+      {
+        "quote": "Autonome, force de proposition et extrêmement fiable sur la qualité de livraison. Je recommande sans réserve.",
+        "author": "Marc Ferreira",
+        "role": "Head of Product — Digital Horizon",
+        "avatar": "",
+        "rating": 5
+      }
+    ]
+  },
+  "contact": {
+    "badgeIcon": "message-square",
+    "badgeText": "Restons en contact",
+    "title": "Parlons de votre",
+    "titleHighlight": "prochain projet",
+    "intro": "Vous avez une idée de produit, une refonte technique ou un besoin de renfort d'ingénierie senior ? Je suis à l'écoute de vos objectifs pour y apporter des réponses concrètes.",
+    "socialsTitle": "Réseaux & Plateformes",
+    "infos": [
+      {
+        "icon": "mail",
+        "label": "Adresse e-mail",
+        "value": "alexandre.laurent.dev@example.com",
+        "copyable": true,
+        "accent": 1
+      },
+      {
+        "icon": "map-pin",
+        "label": "Localisation",
+        "value": "Paris, France • Missions Remote & Hybride",
+        "copyable": false,
+        "accent": 2
+      },
+      {
+        "icon": "clock",
+        "label": "Délai de réponse",
+        "value": "Généralement sous 24 heures ouvrées",
+        "copyable": false,
+        "accent": 3
+      }
+    ],
+    "socials": [
+      { "label": "GitHub", "icon": "github", "url": "https://github.com", "accent": 1 },
+      { "label": "LinkedIn", "icon": "linkedin", "url": "https://linkedin.com", "accent": 2 },
+      { "label": "Email", "icon": "send", "url": "mailto:alexandre.laurent.dev@example.com", "accent": 3 }
+    ],
+    "form": {
+      "enabled": true,
+      "title": "Envoyer un message direct",
+      "subtitle": "Remplissez le formulaire ci-dessous pour une prise de contact rapide.",
+      "nameLabel": "Nom complet",
+      "emailLabel": "Adresse e-mail",
+      "subjectLabel": "Sujet de la demande",
+      "messageLabel": "Votre message ou description du projet",
+      "submitLabel": "Envoyer ma demande",
+      "successMessage": "Message transmis avec succès ! Vous recevrez une réponse sous 24h.",
+      "privacyNote": "Vos coordonnées restent strictement confidentielles et ne seront jamais partagées.",
+      "subjects": [
+        { "value": "projet-web", "label": "Création ou refonte d'application Web" },
+        { "value": "consulting", "label": "Audit technique & architecture logicielle" },
+        { "value": "freelance", "label": "Mission de renfort d'équipe senior" },
+        { "value": "autre", "label": "Autre question ou proposition" }
+      ],
+      "endpoint": ""
+    }
+  },
+  "footer": {
+    "copyright": "Tous droits réservés.",
+    "showQuickNav": true,
+    "showBackToTop": true
+  }
+}

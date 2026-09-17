@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Variables pilotées par l'éditeur (src/lib/themes.ts + fonts.ts)
+   --------------------------------------------------------------- */
+:root {
+  --acc-1: 167 139 250;
+  --acc-2: 56 189 248;
+  --acc-3: 52 211 153;
+  --bg-base: 3 7 18;
+  --surface: 15 23 42;
+  --radius-app: 1rem;
+  --font-app: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: rgb(var(--bg-base));
+  font-family: var(--font-app);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: rgb(var(--acc-1) / 0.3); color: #fff; }
+
+/* ---------------------------- Glassmorphism ---------------------------- */
+.glass-panel {
+  background: rgb(var(--surface) / 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.glass-nav {
+  background: rgb(var(--bg-base) / 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgb(255 255 255 / 0.06);
+}
+
+.glass-badge {
+  background: rgb(var(--surface) / 0.5);
+  border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, rgb(var(--acc-1)) 0%, rgb(var(--acc-2)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glow-accent { box-shadow: 0 0 40px -10px rgb(var(--acc-1) / 0.25); }
+.rounded-app { border-radius: var(--radius-app); }
+
+/* ---------------------------- Scrollbar ---------------------------- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgb(var(--bg-base)); }
+::-webkit-scrollbar-thumb { background: rgb(var(--surface)); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--acc-1) / 0.5); }
+
+/* ---------------------------- Reveal ---------------------------- */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-section.is-revealed { opacity: 1; transform: translateY(0); }
+
+/* ---------------------------- Cartes accentuées ---------------------------- */
+.accent-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+.accent-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(800px circle at 50% 0%, rgb(var(--c) / 0.12), transparent 70%);
+}
+.accent-card:hover::before { opacity: 1; }
+.accent-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: rgb(var(--c) / 0.45);
+  box-shadow: 0 16px 36px -10px rgb(var(--c) / 0.32),
+              0 0 28px -2px rgb(var(--c) / 0.22);
+}
+
+/* ---------------------------- Boutons ---------------------------- */
+@keyframes subtle-btn-bounce {
+  0%   { transform: translateY(0) scale(1); }
+  30%  { transform: translateY(-4px) scale(1.025); }
+  55%  { transform: translateY(1px) scale(0.995); }
+  75%  { transform: translateY(-2px) scale(1.01); }
+  100% { transform: translateY(-1.5px) scale(1.015); }
+}
+.btn-bounce {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+  will-change: transform;
+}
+.btn-bounce:hover { animation: subtle-btn-bounce 0.5s cubic-bezier(0.2, 0.8, 0.2, 1.2) forwards; }
+.btn-bounce:active { transform: translateY(1px) scale(0.98); animation: none; }
+
+.btn-primary {
+  background-image: linear-gradient(to right, rgb(var(--acc-1)), rgb(var(--acc-2)));
+  color: rgb(var(--bg-base));
+  box-shadow: 0 10px 30px -10px rgb(var(--acc-1) / 0.5);
+}
+.btn-primary:hover { filter: brightness(1.08); }
+
+/* ---------------------------- Toasts ---------------------------- */
+@keyframes toast-progress-indeterminate {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+.animate-toast-progress { animation: toast-progress-indeterminate 1.4s ease-in-out infinite; }
+
+@keyframes spin-smooth { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.animate-spin-smooth { animation: spin-smooth 0.85s linear infinite; }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.toast-enter { animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ---------------------------- Flottement ---------------------------- */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-10px); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+/* ---------------------------- Panneau d'édition ---------------------------- */
+@keyframes panel-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.panel-enter { animation: panel-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+.editor-scroll { scrollbar-width: thin; }
+.drag-over { outline: 2px dashed rgb(var(--acc-1) / 0.6); outline-offset: 2px; }
+.dragging { opacity: 0.4; }
+
+/* ---------------------------- Accessibilité ---------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-section { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .accent-card:hover { transform: none !important; }
+  .btn-bounce, .btn-bounce:hover, .btn-bounce:active { animation: none !important; transform: none !important; }
+  .animate-toast-progress, .animate-spin-smooth, .animate-float, .toast-enter, .panel-enter { animation: none !important; }
+}
