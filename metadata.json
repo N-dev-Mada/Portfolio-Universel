@@ -2,5 +2,5 @@
   "name": "Portfolio universel — éditable sans code",
   "description": "Portfolio React dynamique piloté par un fichier JSON unique, avec éditeur visuel intégré (Visual Portfolio Builder) : édition en direct, modèles de profil, thèmes, typographies Google Fonts, réorganisation des sections, import/export de configuration.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -8,6 +8,8 @@ import { Reveal } from '../ui/Reveal';
 const INPUT =
   'w-full px-4 py-3 rounded-xl bg-[rgb(var(--bg-base)/0.8)] border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[rgb(var(--acc-1))] focus:ring-2 focus:ring-[rgb(var(--acc-1)/0.3)] transition-all';
 
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 export default function Contact({ id }: { id: string }) {
   const { config } = useConfig();
   const { toast } = useToast();
@@ -33,15 +35,25 @@ export default function Contact({ id }: { id: string }) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.message.trim() || (subjects.length > 0 && !form.subject)) {
+    if (
+      !form.name.trim() ||
+      !form.email.trim() ||
+      !form.message.trim() ||
+      (subjects.length > 0 && !form.subject)
+    ) {
       toast('Veuillez renseigner tous les champs obligatoires (*).', 'error');
       return;
     }
 
+    if (!EMAIL_REGEX.test(form.email.trim())) {
+      toast('Veuillez saisir une adresse e-mail valide (ex. nom@domaine.com).', 'error');
+      return;
+    }
+
     setBusy(true);
-    const t = toast('Transmission sécurisée de votre demande…', 'loading');
 
     if (filled(c.form.endpoint)) {
+      const t = toast('Transmission sécurisée de votre demande…', 'loading');
       try {
         const res = await fetch(c.form.endpoint, {
           method: 'POST',
@@ -49,21 +61,35 @@ export default function Contact({ id }: { id: string }) {
           body: JSON.stringify(form),
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        t.update(c.form.successMessage || 'Message envoyé !', 'success');
+        t.update(c.form.successMessage || 'Message envoyé avec succès !', 'success');
         setForm({ name: '', email: '', subject: '', message: '' });
       } catch {
-        t.update("L'envoi a échoué. Réessayez ou écrivez directement par e-mail.", 'error');
+        t.update("L'envoi a échoué. Réessayez ou utilisez directement les liens de contact.", 'error');
       } finally {
         setBusy(false);
       }
       return;
     }
 
-    window.setTimeout(() => {
-      t.update(c.form.successMessage || 'Message envoyé !', 'success');
-      setForm({ name: '', email: '', subject: '', message: '' });
-      setBusy(false);
-    }, 1200);
+    // Aucun endpoint configuré : bascule transparente sur mailto: pré-rempli
+    const recipientEmail =
+      c.infos.find((info) => info.value && info.value.includes('@'))?.value ||
+      c.socials.find((s) => s.url && s.url.startsWith('mailto:'))?.url.replace(/^mailto:/i, '') ||
+      '';
+
+    const subjectLabel = subjects.find((s) => s.value === form.subject)?.label || form.subject;
+    const emailSubject = subjectLabel
+      ? `[Contact Portfolio] ${subjectLabel}`
+      : `[Contact Portfolio] Message de ${form.name}`;
+    const emailBody = `Nom : ${form.name}\nEmail : ${form.email}\nSujet : ${subjectLabel || 'Prise de contact'}\n\nMessage :\n${form.message}`;
+
+    const target = recipientEmail || 'contact@example.com';
+    const mailtoUrl = `mailto:${encodeURIComponent(target)}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    toast('Ouverture de votre application de messagerie…', 'info', 4000);
+    window.location.href = mailtoUrl;
+    setForm({ name: '', email: '', subject: '', message: '' });
+    setBusy(false);
   };
 
   if (infos.length === 0 && socials.length === 0 && !showForm) return null;

@@ -11,23 +11,61 @@ export default function Navbar() {
   const sections = config.sections.filter((s) => s.enabled);
 
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY + 200;
-      for (const s of sections) {
-        const el = document.getElementById(s.id);
-        if (!el) continue;
-        if (y >= el.offsetTop && y < el.offsetTop + el.offsetHeight) {
-          setActive(s.id);
-          return;
+    if (sections.length === 0) return;
+
+    if (!('IntersectionObserver' in window)) {
+      setActive(sections[0].id);
+      return;
+    }
+
+    const visibleSections = new Map<string, number>();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          if (entry.isIntersecting) {
+            visibleSections.set(id, entry.intersectionRatio);
+          } else {
+            visibleSections.delete(id);
+          }
+        });
+
+        if (visibleSections.size > 0) {
+          let bestId = '';
+          let maxRatio = -1;
+
+          for (const s of sections) {
+            const ratio = visibleSections.get(s.id);
+            if (ratio !== undefined && ratio > maxRatio) {
+              maxRatio = ratio;
+              bestId = s.id;
+            }
+          }
+
+          if (bestId) {
+            setActive(bestId);
+          }
         }
-      }
+      },
+      {
+        rootMargin: '-80px 0px -35% 0px',
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+      },
+    );
+
+    sections.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
     };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
   }, [sections]);
 
   const go = (id: string) => {
+    setActive(id);
     setOpen(false);
     scrollToId(id);
   };

@@ -1,6 +1,7 @@
-import { useRef, type ReactNode } from 'react';
-import { cx, readFileAsDataUrl } from '../../../lib/utils';
+import { useRef, useState, type ReactNode } from 'react';
+import { cx, compressImageFile } from '../../../lib/utils';
 import Icon from '../../ui/Icon';
+import { useToast } from '../../ui/Toast';
 
 const BASE =
   'w-full px-3 py-2 rounded-lg bg-[rgb(var(--bg-base)/0.75)] border border-white/10 text-slate-100 text-sm placeholder-slate-600 focus:outline-none focus:border-[rgb(var(--acc-1))] focus:ring-2 focus:ring-[rgb(var(--acc-1)/0.25)] transition-all';
@@ -208,15 +209,28 @@ export function ImageField({
   hint?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [compressing, setCompressing] = useState(false);
+  const { toast } = useToast();
 
   const pick = async (file?: File) => {
     if (!file) return;
-    const dataUrl = await readFileAsDataUrl(file);
-    onChange(dataUrl);
+    setCompressing(true);
+    const t = toast('Optimisation de l’image…', 'loading');
+    try {
+      const dataUrl = await compressImageFile(file, 800, 800, 0.82);
+      onChange(dataUrl);
+      t.update('Image optimisée avec succès (< 150 Ko).', 'success', 2500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Échec du traitement de l’image.';
+      t.update(msg, 'error', 4500);
+    } finally {
+      setCompressing(false);
+      if (inputRef.current) inputRef.current.value = '';
+    }
   };
 
   return (
-    <Field label={label} hint={hint ?? 'Collez une URL ou téléversez un fichier (encodé en base64).'}>
+    <Field label={label} hint={hint ?? 'Collez une URL ou téléversez un fichier (auto-optimisé < 150 Ko).'}>
       <div className="space-y-2">
         <input
           type="text"
@@ -228,18 +242,19 @@ export function ImageField({
         <div className="flex items-center gap-2">
           <button
             type="button"
+            disabled={compressing}
             onClick={() => inputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass-badge text-xs font-medium text-slate-300 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass-badge text-xs font-medium text-slate-300 hover:text-white transition-colors disabled:opacity-50 cursor-pointer"
           >
-            <Icon name="upload" className="w-3.5 h-3.5" />
-            Téléverser
+            <Icon name={compressing ? 'loader-2' : 'upload'} className={cx('w-3.5 h-3.5', compressing && 'animate-spin')} />
+            <span>{compressing ? 'Optimisation…' : 'Téléverser'}</span>
           </button>
           {value && (
             <>
               <button
                 type="button"
                 onClick={() => onChange('')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass-badge text-xs font-medium text-rose-300 hover:text-rose-200 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass-badge text-xs font-medium text-rose-300 hover:text-rose-200 transition-colors cursor-pointer"
               >
                 <Icon name="trash-2" className="w-3.5 h-3.5" />
                 Retirer

@@ -107,6 +107,78 @@ export function readFileAsDataUrl(file: File): Promise<string> {
   });
 }
 
+/**
+ * Redimensionne et compresse une image côté client via un élément Canvas
+ * pour préserver les performances et le quota du stockage local (< 150 Ko).
+ */
+export function compressImageFile(
+  file: File,
+  maxWidth = 800,
+  maxHeight = 800,
+  quality = 0.82,
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith('image/')) {
+      return reject(new Error('Le fichier sélectionné n’est pas une image valide.'));
+    }
+
+    // Préserver les fichiers vectoriels SVG
+    if (file.type === 'image/svg+xml') {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(new Error('Lecture du fichier vectoriel SVG impossible.'));
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Lecture du fichier image impossible.'));
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Fichier image corrompu ou illisible.'));
+      img.onload = () => {
+        let { width, height } = img;
+
+        if (width <= 0 || height <= 0) {
+          return reject(new Error('Dimensions d’image invalides.'));
+        }
+
+        // Conservation du ratio d'aspect
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.max(1, Math.round(width * ratio));
+          height = Math.max(1, Math.round(height * ratio));
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          return reject(new Error('Initialisation du contexte Canvas impossible.'));
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Tentative d'encodage en WebP, fallback vers JPEG
+        try {
+          const webpData = canvas.toDataURL('image/webp', quality);
+          if (webpData && webpData.startsWith('data:image/webp')) {
+            return resolve(webpData);
+          }
+        } catch {
+          /* fallback to jpeg */
+        }
+
+        const jpegData = canvas.toDataURL('image/jpeg', quality);
+        resolve(jpegData);
+      };
+      img.src = String(e.target?.result);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 export function scrollToId(id: string): void {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });

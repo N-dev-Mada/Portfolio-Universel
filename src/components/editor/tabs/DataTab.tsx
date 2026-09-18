@@ -29,8 +29,9 @@ export default function DataTab() {
       const text = await readFileAsText(file);
       importConfig(text);
       t.update('Configuration importée avec succès.', 'success');
-    } catch {
-      t.update('Fichier invalide : JSON illisible.', 'error');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Fichier invalide : JSON illisible.';
+      t.update(msg, 'error', 5000);
     }
   };
 

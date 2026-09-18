@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import ErrorBoundary from './components/ErrorBoundary';
 import EditorLauncher from './components/editor/EditorLauncher';
 import AmbientBackground from './components/layout/AmbientBackground';
 import Footer from './components/layout/Footer';
@@ -32,10 +33,12 @@ function Portfolio() {
 
 export default function App() {
   return (
-    <ConfigProvider>
+    <ErrorBoundary>
       <ToastProvider>
-        <Portfolio />
+        <ConfigProvider>
+          <Portfolio />
+        </ConfigProvider>
       </ToastProvider>
-    </ConfigProvider>
+    </ErrorBoundary>
   );
 }

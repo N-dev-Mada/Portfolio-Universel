@@ -4,16 +4,19 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
+import { useOptionalToast } from '../components/ui/Toast';
 import defaultConfig from '../data/portfolio-config.json';
 import type { PortfolioConfig } from '../types/config';
 import { applyFont } from './fonts';
 import { applyTheme } from './themes';
 import { deepMerge, downloadJson, setPath } from './utils';
+import { validatePortfolioConfig } from './validation';
 
-const STORAGE_KEY = 'vpb:portfolio-config';
+export const STORAGE_KEY = 'vpb:portfolio-config';
 
 const DEFAULTS = defaultConfig as unknown as PortfolioConfig;
 
@@ -21,7 +24,13 @@ export function loadInitialConfig(): PortfolioConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return structuredClone(DEFAULTS);
-    return deepMerge(structuredClone(DEFAULTS), JSON.parse(raw));
+    const parsed = JSON.parse(raw);
+    const validation = validatePortfolioConfig(parsed);
+    if (!validation.success) {
+      console.warn('Configuration locale corrompue ignorée :', validation.error);
+      return structuredClone(DEFAULTS);
+    }
+    return deepMerge(structuredClone(DEFAULTS), validation.data!);
   } catch {
     return structuredClone(DEFAULTS);
   }
@@ -44,15 +53,51 @@ const ConfigContext = createContext<ConfigContextValue | null>(null);
 export function ConfigProvider({ children }: { children: ReactNode }) {
   const [config, setConfigState] = useState<PortfolioConfig>(() => loadInitialConfig());
   const [dirty, setDirty] = useState(false);
+  const toastContext = useOptionalToast();
+  const isFirstRender = useRef(true);
 
-  // Persistance locale
+  // Persistance locale avec interception des dépassements de quota
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+      } catch (err) {
+        console.warn('Impossible d’écrire la configuration initiale dans le stockage local :', err);
+      }
+      return;
+    }
+
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-    } catch {
-      /* quota dépassé : on ignore silencieusement */
+    } catch (err: unknown) {
+      console.error('Erreur de persistance dans le stockage local :', err);
+      const isQuota =
+        (err instanceof DOMException &&
+          (err.name === 'QuotaExceededError' ||
+            err.code === 22 ||
+            err.code === 1014 ||
+            err.name === 'NS_ERROR_DOM_QUOTA_REACHED')) ||
+        (typeof err === 'object' &&
+          err !== null &&
+          'name' in err &&
+          (err as { name: string }).name === 'QuotaExceededError');
+
+      if (isQuota) {
+        toastContext?.toast(
+          'Quota de stockage local dépassé : votre modification n’a pas pu être enregistrée. Pensez à réduire la taille des images importées.',
+          'error',
+          6000,
+        );
+      } else {
+        toastContext?.toast(
+          'Erreur inattendue lors de la sauvegarde dans le stockage local.',
+          'error',
+          4000,
+        );
+      }
     }
-  }, [config]);
+  }, [config, toastContext]);
 
   // Thème + typographie + méta
   useEffect(() => {
@@ -92,11 +137,29 @@ export function ConfigProvider({ children }: { children: ReactNode }) {
     downloadJson(config, 'portfolio-config.json');
   }, [config]);
 
-  const importConfig = useCallback((json: string) => {
-    const parsed = JSON.parse(json) as Partial<PortfolioConfig>;
-    setConfigState(deepMerge(structuredClone(DEFAULTS), parsed));
-    setDirty(true);
-  }, []);
+  const importConfig = useCallback(
+    (json: string) => {
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(json);
+      } catch {
+        const errMsg = 'Format de fichier invalide : JSON illisible ou malformé.';
+        toastContext?.toast(errMsg, 'error', 5000);
+        throw new Error(errMsg);
+      }
+
+      const validation = validatePortfolioConfig(parsed);
+      if (!validation.success) {
+        const errMsg = `Configuration invalide : ${validation.error}`;
+        toastContext?.toast(errMsg, 'error', 6000);
+        throw new Error(errMsg);
+      }
+
+      setConfigState(deepMerge(structuredClone(DEFAULTS), validation.data!));
+      setDirty(true);
+    },
+    [toastContext],
+  );
 
   const value = useMemo<ConfigContextValue>(
     () => ({ config, setConfig, update, reset, exportConfig, importConfig, dirty }),
