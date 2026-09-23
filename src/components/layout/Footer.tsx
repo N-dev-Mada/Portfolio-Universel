@@ -3,13 +3,13 @@ import { filled, scrollToId } from '../../lib/utils';
 import Icon from '../ui/Icon';
 
 export default function Footer() {
-  const { config } = useConfig();
+  const { config, t } = useConfig();
   const { identity, footer } = config;
   const sections = config.sections.filter((s) => s.enabled);
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/5 py-12 relative bg-[rgb(var(--bg-base)/0.9)]">
+    <footer className="border-t border-[rgb(var(--border-base))] py-12 relative bg-[rgb(var(--bg-base)/0.9)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3 text-center md:text-left">
@@ -18,9 +18,9 @@ export default function Footer() {
                 {identity.initials}
               </span>
             )}
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-[rgb(var(--text-secondary))]">
               {filled(identity.name) && (
-                <span className="font-semibold text-white">{identity.name}</span>
+                <span className="font-semibold text-[rgb(var(--text-primary))]">{identity.name}</span>
               )}
               {filled(identity.name) && ' — '}© {year}
               {filled(footer.copyright) && `. ${footer.copyright}`}
@@ -28,13 +28,13 @@ export default function Footer() {
           </div>
 
           {footer.showQuickNav && sections.length > 0 && (
-            <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs text-slate-400">
+            <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-xs text-[rgb(var(--text-secondary))]">
               {sections.map((s) => (
                 <button
                   key={s.id}
                   type="button"
                   onClick={() => scrollToId(s.id)}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-[rgb(var(--text-primary))] transition-colors"
                 >
                   {s.label}
                 </button>
@@ -49,7 +49,7 @@ export default function Footer() {
               className="btn-bounce inline-flex items-center gap-2 px-3 py-1.5 rounded-lg glass-badge text-xs text-slate-300 hover:text-white transition-all"
               aria-label="Retourner en haut de la page"
             >
-              <span>Haut de page</span>
+              <span>{t.nav.backToTop}</span>
               <Icon name="arrow-up" className="w-3.5 h-3.5" />
             </button>
           )}

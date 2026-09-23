@@ -61,19 +61,32 @@ export function getFont(id: string): FontOption {
   return FONTS.find((f) => f.id === id) ?? FONTS[0];
 }
 
-const LINK_ID = 'vpb-google-font';
+const DYNAMIC_LINK_ID = 'vpb-dynamic-font';
+const LEGACY_LINK_ID = 'vpb-google-font';
 
-/** Injecte (ou remplace) la feuille Google Fonts et applique la pile typographique. */
-export function applyFont(fontId: string): void {
+/** Supprime ou remplace proprement l'ancienne balise de police avant d'en injecter une nouvelle. */
+export function loadGoogleFont(fontId: string): void {
   const font = getFont(fontId);
-  let link = document.getElementById(LINK_ID) as HTMLLinkElement | null;
-  if (!link) {
-    link = document.createElement('link');
-    link.id = LINK_ID;
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }
   const href = `https://fonts.googleapis.com/css2?family=${font.query}&display=swap`;
-  if (link.href !== href) link.href = href;
+
+  // Nettoyage de l'ancienne balise orpheline pour éviter l'accumulation dans document.head
+  const existingDynamic = document.getElementById(DYNAMIC_LINK_ID);
+  if (existingDynamic && existingDynamic.parentNode) {
+    existingDynamic.parentNode.removeChild(existingDynamic);
+  }
+  const existingLegacy = document.getElementById(LEGACY_LINK_ID);
+  if (existingLegacy && existingLegacy.parentNode) {
+    existingLegacy.parentNode.removeChild(existingLegacy);
+  }
+
+  // Création et injection de la balise propre
+  const link = document.createElement('link');
+  link.id = DYNAMIC_LINK_ID;
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+
   document.documentElement.style.setProperty('--font-app', font.stack);
 }
+
+export const applyFont = loadGoogleFont;

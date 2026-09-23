@@ -12,6 +12,7 @@ const VALID_SECTION_TYPES: readonly SectionType[] = [
   'projects',
   'experience',
   'testimonials',
+  'articles',
   'contact',
 ];
 

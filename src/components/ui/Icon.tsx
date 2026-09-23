@@ -1,5 +1,6 @@
 import type { LucideProps } from 'lucide-react';
 import {
+  AlertTriangle,
   Aperture,
   ArrowRight,
   ArrowUp,
@@ -84,6 +85,7 @@ import {
   Plus,
   Presentation,
   Quote,
+  RefreshCw,
   Rocket,
   RotateCcw,
   Rss,
@@ -122,6 +124,7 @@ import {
  * ce qui évite d'embarquer l'intégralité de lucide-react dans le bundle.
  */
 const REGISTRY: Record<string, React.ComponentType<LucideProps>> = {
+  'alert-triangle': AlertTriangle,
   'aperture': Aperture,
   'arrow-right': ArrowRight,
   'arrow-up': ArrowUp,
@@ -206,6 +209,7 @@ const REGISTRY: Record<string, React.ComponentType<LucideProps>> = {
   'plus': Plus,
   'presentation': Presentation,
   'quote': Quote,
+  'refresh-cw': RefreshCw,
   'rocket': Rocket,
   'rotate-ccw': RotateCcw,
   'rss': Rss,

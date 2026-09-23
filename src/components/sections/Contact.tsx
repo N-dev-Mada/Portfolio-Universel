@@ -11,7 +11,7 @@ const INPUT =
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export default function Contact({ id }: { id: string }) {
-  const { config } = useConfig();
+  const { config, t } = useConfig();
   const { toast } = useToast();
   const c = config.contact;
 
@@ -24,12 +24,12 @@ export default function Contact({ id }: { id: string }) {
   const showForm = c.form.enabled;
 
   const copy = async (value: string) => {
-    const t = toast('Copie en cours…', 'loading');
+    const toastInstance = toast('Copie en cours…', 'loading');
     try {
       await navigator.clipboard.writeText(value);
-      window.setTimeout(() => t.update('Copié dans le presse-papier !', 'success'), 350);
+      window.setTimeout(() => toastInstance.update(t.contact.copied, 'success'), 350);
     } catch {
-      t.update(value, 'info');
+      toastInstance.update(value, 'info');
     }
   };
 
@@ -41,19 +41,19 @@ export default function Contact({ id }: { id: string }) {
       !form.message.trim() ||
       (subjects.length > 0 && !form.subject)
     ) {
-      toast('Veuillez renseigner tous les champs obligatoires (*).', 'error');
+      toast(t.contact.requiredFields, 'error');
       return;
     }
 
     if (!EMAIL_REGEX.test(form.email.trim())) {
-      toast('Veuillez saisir une adresse e-mail valide (ex. nom@domaine.com).', 'error');
+      toast(t.contact.invalidEmail, 'error');
       return;
     }
 
     setBusy(true);
 
     if (filled(c.form.endpoint)) {
-      const t = toast('Transmission sécurisée de votre demande…', 'loading');
+      const toastInstance = toast(t.contact.sending, 'loading');
       try {
         const res = await fetch(c.form.endpoint, {
           method: 'POST',
@@ -61,10 +61,20 @@ export default function Contact({ id }: { id: string }) {
           body: JSON.stringify(form),
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        t.update(c.form.successMessage || 'Message envoyé avec succès !', 'success');
+        const text = await res.text();
+        let data: Record<string, unknown> = {};
+        if (text) {
+          try {
+            data = JSON.parse(text);
+          } catch {
+            data = {};
+          }
+        }
+        const serverMessage = typeof data?.message === 'string' ? data.message : '';
+        toastInstance.update(serverMessage || c.form.successMessage || t.contact.successMessage, 'success');
         setForm({ name: '', email: '', subject: '', message: '' });
       } catch {
-        t.update("L'envoi a échoué. Réessayez ou utilisez directement les liens de contact.", 'error');
+        toastInstance.update(t.contact.errorMessage, 'error');
       } finally {
         setBusy(false);
       }
@@ -86,7 +96,7 @@ export default function Contact({ id }: { id: string }) {
     const target = recipientEmail || 'contact@example.com';
     const mailtoUrl = `mailto:${encodeURIComponent(target)}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
-    toast('Ouverture de votre application de messagerie…', 'info', 4000);
+    toast(t.contact.openingMailClient, 'info', 4000);
     window.location.href = mailtoUrl;
     setForm({ name: '', email: '', subject: '', message: '' });
     setBusy(false);
@@ -233,11 +243,11 @@ export default function Contact({ id }: { id: string }) {
                         onChange={(e) => setForm({ ...form, subject: e.target.value })}
                         className={cx(INPUT, 'cursor-pointer')}
                       >
-                        <option value="" disabled>
+                        <option value="" disabled className="bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))]">
                           Sélectionnez une option
                         </option>
                         {subjects.map((s) => (
-                          <option key={s.value} value={s.value} className="bg-slate-950">
+                          <option key={s.value} value={s.value} className="bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))]">
                             {s.label}
                           </option>
                         ))}

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useConfig } from '../../lib/config-context';
 import { cx, filled, scrollToId } from '../../lib/utils';
 import Icon from '../ui/Icon';
+import LanguageSwitcher from '../ui/LanguageSwitcher';
 
 export default function Navbar() {
-  const { config } = useConfig();
+  const { config, t } = useConfig();
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('');
 
@@ -96,12 +97,12 @@ export default function Navbar() {
           )}
           <span className="flex flex-col text-left">
             {filled(identity.name) && (
-              <span className="font-bold tracking-tight text-white group-hover:text-[rgb(var(--acc-1))] transition-colors">
+              <span className="font-bold tracking-tight text-[rgb(var(--text-primary))] group-hover:text-[rgb(var(--acc-1))] transition-colors">
                 {identity.name}
               </span>
             )}
             {filled(identity.role) && (
-              <span className="text-xs text-slate-400 font-medium">{identity.role}</span>
+              <span className="text-xs text-[rgb(var(--text-secondary))] font-medium">{identity.role}</span>
             )}
           </span>
         </button>
@@ -129,7 +130,11 @@ export default function Navbar() {
           </nav>
         )}
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Commutateur de langue FR / EN */}
+          <LanguageSwitcher variant="segmented" className="hidden sm:inline-flex" />
+          <LanguageSwitcher variant="compact" className="sm:hidden" />
+
           {showCta && (
             <button
               type="button"
@@ -156,8 +161,12 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="md:hidden px-4 pt-2 pb-6 glass-panel border-t border-white/5 mt-1">
+        <div className="md:hidden px-4 pt-2 pb-6 glass-panel border-t border-[rgb(var(--border-base))] mt-1">
           <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between px-3 py-2 border-b border-white/5 mb-1">
+              <span className="text-xs text-slate-400 font-medium">{t.nav.language} :</span>
+              <LanguageSwitcher variant="segmented" />
+            </div>
             {sections.map((s) => (
               <button
                 key={s.id}

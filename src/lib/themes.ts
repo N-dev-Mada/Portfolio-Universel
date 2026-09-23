@@ -5,10 +5,18 @@ export interface ThemePreset {
   acc1: string;
   acc2: string;
   acc3: string;
-  /** couleur de fond principale */
+  /** couleur de fond principale (triplet RGB) */
   bg: string;
-  /** surface vitrée */
+  /** surface vitrée (triplet RGB) */
   surface: string;
+  /** texte principal (triplet RGB) */
+  textPrimary?: string;
+  /** texte secondaire (triplet RGB) */
+  textSecondary?: string;
+  /** bordure de base */
+  borderBase?: string;
+  /** mode clair ou sombre */
+  mode?: 'dark' | 'light';
   swatch: [string, string];
 }
 
@@ -21,6 +29,10 @@ export const THEMES: ThemePreset[] = [
     acc3: '52 211 153',
     bg: '3 7 18',
     surface: '15 23 42',
+    textPrimary: '248 250 252',
+    textSecondary: '148 163 184',
+    borderBase: '255 255 255 / 0.08',
+    mode: 'dark',
     swatch: ['#a78bfa', '#38bdf8'],
   },
   {
@@ -31,6 +43,10 @@ export const THEMES: ThemePreset[] = [
     acc3: '132 204 22',
     bg: '2 12 10',
     surface: '6 30 26',
+    textPrimary: '248 250 252',
+    textSecondary: '148 163 184',
+    borderBase: '255 255 255 / 0.08',
+    mode: 'dark',
     swatch: ['#34d399', '#2dd4bf'],
   },
   {
@@ -41,6 +57,10 @@ export const THEMES: ThemePreset[] = [
     acc3: '248 113 113',
     bg: '14 5 12',
     surface: '35 12 30',
+    textPrimary: '248 250 252',
+    textSecondary: '148 163 184',
+    borderBase: '255 255 255 / 0.08',
+    mode: 'dark',
     swatch: ['#f472b6', '#fbbf24'],
   },
   {
@@ -51,6 +71,10 @@ export const THEMES: ThemePreset[] = [
     acc3: '212 212 216',
     bg: '9 9 11',
     surface: '24 24 27',
+    textPrimary: '248 250 252',
+    textSecondary: '148 163 184',
+    borderBase: '255 255 255 / 0.08',
+    mode: 'dark',
     swatch: ['#fafafa', '#a1a1aa'],
   },
 ];
@@ -74,6 +98,18 @@ export function applyTheme(presetId: string, radius: string): void {
   root.style.setProperty('--acc-2', t.acc2);
   root.style.setProperty('--acc-3', t.acc3);
   root.style.setProperty('--bg-base', t.bg);
+  root.style.setProperty('--bg-surface', t.surface);
   root.style.setProperty('--surface', t.surface);
+  root.style.setProperty('--text-primary', t.textPrimary ?? '248 250 252');
+  root.style.setProperty('--text-secondary', t.textSecondary ?? '148 163 184');
+  root.style.setProperty('--border-base', t.borderBase ?? '255 255 255 / 0.08');
   root.style.setProperty('--radius-app', RADIUS_MAP[radius] ?? RADIUS_MAP.xl);
+
+  if (t.mode === 'light') {
+    root.classList.add('light-theme');
+    root.classList.remove('dark-theme');
+  } else {
+    root.classList.add('dark-theme');
+    root.classList.remove('light-theme');
+  }
 }

@@ -10,7 +10,18 @@ const TYPE_ICON: Record<SectionType, string> = {
   projects: 'layers',
   experience: 'milestone',
   testimonials: 'quote',
+  articles: 'book-open',
   contact: 'mail',
+};
+
+const DEFAULT_LABELS: Record<SectionType, string> = {
+  hero: 'Accueil',
+  skills: 'Compétences',
+  projects: 'Projets',
+  experience: 'Parcours',
+  testimonials: 'Témoignages',
+  articles: 'Publications',
+  contact: 'Contact',
 };
 
 export default function SectionsTab() {
@@ -98,6 +109,29 @@ export default function SectionsTab() {
                 </button>
               )}
 
+              <div className="flex items-center gap-0.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => move(i, i - 1)}
+                  disabled={i === 0}
+                  className="p-1 rounded text-slate-500 hover:text-white disabled:opacity-20 disabled:pointer-events-none transition-colors"
+                  title="Monter la section"
+                  aria-label="Monter la section"
+                >
+                  <Icon name="chevron-up" className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => move(i, i + 1)}
+                  disabled={i === sections.length - 1}
+                  className="p-1 rounded text-slate-500 hover:text-white disabled:opacity-20 disabled:pointer-events-none transition-colors"
+                  title="Descendre la section"
+                  aria-label="Descendre la section"
+                >
+                  <Icon name="chevron-down" className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
               <button
                 type="button"
                 onClick={() => patch(i, { label: s.label, id: slugify(s.label) })}
@@ -130,10 +164,51 @@ export default function SectionsTab() {
         ))}
       </div>
 
+      {(() => {
+        const existingTypes = new Set(sections.map((s) => s.type));
+        const allTypes: SectionType[] = [
+          'hero',
+          'skills',
+          'projects',
+          'experience',
+          'testimonials',
+          'articles',
+          'contact',
+        ];
+        const missing = allTypes.filter((t) => !existingTypes.has(t));
+
+        if (missing.length === 0) return null;
+
+        return (
+          <div className="pt-2">
+            <span className="block text-xs font-semibold text-slate-300 mb-2">
+              Sections disponibles à ajouter :
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {missing.map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => {
+                    const label = DEFAULT_LABELS[type] || type;
+                    const id = slugify(label);
+                    setSections([...sections, { id, type, label, enabled: true }]);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium glass-badge text-slate-200 hover:text-white hover:bg-white/10 transition-colors"
+                >
+                  <Icon name={TYPE_ICON[type] || 'plus'} className="w-3.5 h-3.5 text-[rgb(var(--acc-1))]" />
+                  <span>+ {DEFAULT_LABELS[type]}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
       <div className="text-[11px] text-slate-500 leading-relaxed border-t border-white/5 pt-3">
         Une section reste masquée si son contenu est vide, même activée. Les types disponibles sont
         fixés par l’architecture : accueil, compétences, projets/galerie, expériences, témoignages,
-        contact.
+        articles/blog, contact.
       </div>
     </div>
   );

@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { cx } from '../../lib/utils';
 import Icon from '../ui/Icon';
 import ContentTab from './tabs/ContentTab';
+import CreditsTab from './tabs/CreditsTab';
 import DataTab from './tabs/DataTab';
 import GeneralTab from './tabs/GeneralTab';
 import SectionsTab from './tabs/SectionsTab';
 import ThemeTab from './tabs/ThemeTab';
 
-type TabId = 'general' | 'content' | 'sections' | 'theme' | 'data';
+type TabId = 'general' | 'content' | 'sections' | 'theme' | 'data' | 'credits';
 
 const TABS: Array<{ id: TabId; label: string; icon: string }> = [
   { id: 'general', label: 'Général', icon: 'user' },
@@ -15,6 +16,7 @@ const TABS: Array<{ id: TabId; label: string; icon: string }> = [
   { id: 'sections', label: 'Sections', icon: 'layout-list' },
   { id: 'theme', label: 'Style', icon: 'palette' },
   { id: 'data', label: 'Données', icon: 'database' },
+  { id: 'credits', label: 'Crédits', icon: 'sparkles' },
 ];
 
 export default function EditorPanel({ onClose }: { onClose: () => void }) {
@@ -69,12 +71,13 @@ export default function EditorPanel({ onClose }: { onClose: () => void }) {
         {tab === 'sections' && <SectionsTab />}
         {tab === 'theme' && <ThemeTab />}
         {tab === 'data' && <DataTab />}
+        {tab === 'credits' && <CreditsTab />}
       </div>
 
       <footer className="px-4 py-2.5 border-t border-white/10 text-[11px] text-slate-500 shrink-0 flex items-center justify-between gap-2">
         <span>Sauvegarde automatique locale</span>
         <kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 font-mono text-[10px]">
-          Ctrl + Shift + E
+          Ctrl + Alt + N
         </kbd>
       </footer>
     </aside>

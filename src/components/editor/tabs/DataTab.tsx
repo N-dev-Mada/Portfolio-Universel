@@ -6,10 +6,11 @@ import Icon from '../../ui/Icon';
 import { useToast } from '../../ui/Toast';
 
 export default function DataTab() {
-  const { setConfig, exportConfig, importConfig, reset } = useConfig();
+  const { setConfig, exportConfig, exportStandalone, importConfig, resetToDefaults, t } = useConfig();
   const { toast } = useToast();
   const fileRef = useRef<HTMLInputElement>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
+  const [showResetModal, setShowResetModal] = useState(false);
 
   const applyPreset = (id: string, label: string) => {
     if (confirming !== id) {
@@ -107,33 +108,107 @@ export default function DataTab() {
       </section>
 
       <section className="space-y-2.5 border-t border-white/5 pt-5">
-        <h3 className="text-sm font-semibold text-slate-100">Réinitialisation</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-slate-100">Export HTML Autonome</h3>
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            Zéro-Build
+          </span>
+        </div>
         <p className="text-xs text-slate-400 leading-relaxed">
-          Efface les modifications enregistrées dans ce navigateur et recharge la configuration
-          d’origine du projet.
+          Génère un unique fichier <code className="font-mono text-emerald-400">.html</code> complet
+          prêt à l'emploi. Déployez-le directement sur GitHub Pages, Netlify, un serveur FTP ou parcourez-le
+          hors-ligne en double-cliquant dessus.
         </p>
         <button
           type="button"
           onClick={() => {
-            if (confirming !== '__reset') {
-              setConfirming('__reset');
-              window.setTimeout(() => setConfirming((c) => (c === '__reset' ? null : c)), 4000);
-              return;
-            }
-            setConfirming(null);
-            reset();
-            toast('Configuration réinitialisée.', 'info');
+            exportStandalone();
+            toast('Site HTML autonome généré et téléchargé.', 'success');
           }}
-          className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
-            confirming === '__reset'
-              ? 'bg-rose-500/20 text-rose-200 border border-rose-500/50'
-              : 'glass-badge text-rose-300 hover:text-rose-200'
-          }`}
+          className="btn-bounce w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white shadow-lg shadow-emerald-900/20"
         >
-          <Icon name="rotate-ccw" className="w-4 h-4" />
-          {confirming === '__reset' ? 'Confirmer la réinitialisation' : 'Réinitialiser'}
+          <Icon name="code-2" className="w-4 h-4" />
+          Télécharger le site autonome (.html)
         </button>
       </section>
+
+      {/* Bloc d'action Restauration d'usine bien en évidence */}
+      <section className="space-y-3 border-t border-rose-500/20 pt-5 p-4 rounded-xl bg-gradient-to-b from-rose-950/20 to-rose-900/10 border border-rose-500/30">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-lg bg-rose-500/20 text-rose-400">
+              <Icon name="alert-triangle" className="w-4 h-4" />
+            </span>
+            <h3 className="text-sm font-bold text-rose-100">{t.editor.resetTitle}</h3>
+          </div>
+          <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">
+            N-Product Reset
+          </span>
+        </div>
+        <p className="text-xs text-rose-200/80 leading-relaxed">
+          {t.editor.resetDescription}
+        </p>
+        <button
+          type="button"
+          onClick={() => setShowResetModal(true)}
+          className="btn-bounce w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-900/40 transition-all focus:outline-none focus:ring-2 focus:ring-rose-400"
+        >
+          <Icon name="rotate-ccw" className="w-4 h-4" />
+          <span>{t.editor.resetButton}</span>
+        </button>
+      </section>
+
+      {/* Boîte de dialogue modale de confirmation explicite */}
+      {showResetModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="reset-dialog-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in"
+        >
+          <div className="w-full max-w-md rounded-2xl glass-panel border border-rose-500/40 p-6 shadow-2xl bg-[rgb(var(--surface)/0.95)] text-slate-100 space-y-4">
+            <div className="flex items-start gap-4">
+              <span className="p-3 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 shrink-0">
+                <Icon name="alert-triangle" className="w-6 h-6" />
+              </span>
+              <div>
+                <h4 id="reset-dialog-title" className="text-base font-bold text-white">
+                  {t.editor.confirmResetButton} ?
+                </h4>
+                <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                  Cette action est irréversible. L'ensemble des modifications personnalisées (textes, images, thèmes et sections) enregistrées dans votre navigateur seront effacées. La configuration initiale du projet sera immédiatement réinjectée.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-[11px] text-slate-400">
+              <span className="font-semibold text-slate-200 block mb-0.5">Conseil de sécurité :</span>
+              Si vous souhaitez conserver votre travail actuel, pensez à utiliser l'action <strong className="text-slate-200">« Exporter JSON »</strong> avant de confirmer.
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowResetModal(false)}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white glass-badge transition-all"
+              >
+                {t.editor.cancelButton}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowResetModal(false);
+                  resetToDefaults();
+                }}
+                className="btn-bounce px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-950/50 flex items-center gap-1.5"
+              >
+                <Icon name="rotate-ccw" className="w-3.5 h-3.5" />
+                <span>{t.editor.confirmResetButton}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { useToast } from '../ui/Toast';
 import { Reveal, SectionHeading } from '../ui/Reveal';
 
 export default function Projects({ id }: { id: string }) {
-  const { config } = useConfig();
+  const { config, t } = useConfig();
   const { toast } = useToast();
   const p = config.projects;
   const [active, setActive] = useState('all');
@@ -29,9 +29,9 @@ export default function Projects({ id }: { id: string }) {
       window.open(url, '_blank', 'noopener,noreferrer');
       return;
     }
-    const t = toast(`Ouverture de « ${label} »…`, 'loading');
+    const toastInstance = toast(`Ouverture de « ${label} »…`, 'loading');
     window.setTimeout(() => {
-      t.update("Aucun lien n'est encore renseigné pour cet élément.", 'info');
+      toastInstance.update(t.projects.noLink, 'info');
     }, 700);
   };
 
@@ -60,7 +60,7 @@ export default function Projects({ id }: { id: string }) {
                     : 'text-slate-400 hover:text-white',
                 )}
               >
-                Tous ({items.length})
+                {t.projects.allFilter} ({items.length})
               </button>
               {filters.map((f) => (
                 <button
@@ -81,7 +81,16 @@ export default function Projects({ id }: { id: string }) {
 
         <div className={cx('grid grid-cols-1 gap-8', cols)}>
           {visible.map((item, i) => {
-            const links = keepFilled(item.links, 'label');
+            const rawLinks = [...(item.links ?? [])];
+            // Si repoUrl est défini et non déjà présent, l'ajouter
+            if (typeof item.repoUrl === 'string' && item.repoUrl.trim().length > 0 && !rawLinks.some((l) => l.url === item.repoUrl)) {
+              rawLinks.push({ label: t.projects.repository, url: item.repoUrl, icon: 'github' });
+            }
+            // Si demoUrl est défini et non déjà présent, l'ajouter
+            if (typeof item.demoUrl === 'string' && item.demoUrl.trim().length > 0 && !rawLinks.some((l) => l.url === item.demoUrl)) {
+              rawLinks.unshift({ label: t.projects.deployment, url: item.demoUrl, icon: 'rocket' });
+            }
+            const links = keepFilled(rawLinks, 'label');
             const tags = (item.tags ?? []).filter(filled);
             return (
               <article

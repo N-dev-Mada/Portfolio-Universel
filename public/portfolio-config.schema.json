@@ -1,0 +1,422 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://visual-portfolio-builder.dev/portfolio-config.schema.json",
+  "title": "PortfolioConfig",
+  "description": "Schéma officiel de configuration pour Visual Portfolio Builder, garantissant intégrité et autocomplétion dans les IDEs.",
+  "type": "object",
+  "required": [
+    "version",
+    "meta",
+    "theme",
+    "identity",
+    "nav",
+    "sections",
+    "hero",
+    "skills",
+    "projects",
+    "experience",
+    "testimonials",
+    "contact",
+    "footer"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Lien vers le schéma JSON pour autocomplétion et validation."
+    },
+    "version": {
+      "type": "integer",
+      "description": "Version de la structure de données.",
+      "default": 1
+    },
+    "meta": {
+      "type": "object",
+      "description": "Métadonnées de page, SEO et balises OpenGraph.",
+      "required": ["title", "description", "lang"],
+      "properties": {
+        "title": { "type": "string", "description": "Titre du document HTML (<title>) et og:title." },
+        "description": { "type": "string", "description": "Description SEO et og:description." },
+        "lang": { "type": "string", "default": "fr", "description": "Attribut lang de la balise <html>." }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "description": "Identité visuelle, palette, typographie et arrondis.",
+      "required": ["preset", "font", "radius", "ambientGlow"],
+      "properties": {
+        "preset": { "type": "string", "description": "Identifiant du preset de couleur (ex: violet-cyan, emerald-teal, nordic-light)." },
+        "font": { "type": "string", "description": "Famille de police Google Fonts à appliquer." },
+        "radius": {
+          "type": "string",
+          "enum": ["sm", "md", "lg", "xl"],
+          "description": "Rayon de courbure des cartes et boutons."
+        },
+        "ambientGlow": {
+          "type": "boolean",
+          "description": "Activation des halos lumineux décoratifs en arrière-plan."
+        }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "description": "Identité professionnelle et avatar.",
+      "required": ["name", "initials", "role"],
+      "properties": {
+        "name": { "type": "string", "description": "Nom complet affiché dans la navigation et les en-têtes." },
+        "initials": { "type": "string", "description": "Initiales utilisées pour le monogramme." },
+        "role": { "type": "string", "description": "Intitulé de poste ou spécialité principale." },
+        "logoImage": { "type": "string", "description": "URL ou image en data-URI du logo (remplace le monogramme si renseignée)." },
+        "avatar": { "type": "string", "description": "URL de la photo de profil." }
+      }
+    },
+    "nav": {
+      "type": "object",
+      "description": "Configuration de la barre de navigation.",
+      "required": ["ctaLabel", "ctaTarget", "mobileCtaLabel"],
+      "properties": {
+        "ctaLabel": { "type": "string", "description": "Libellé du bouton d'action principal de la barre de navigation." },
+        "ctaTarget": { "type": "string", "description": "Identifiant de la section d'ancrage ciblée (ex: contact)." },
+        "mobileCtaLabel": { "type": "string", "description": "Libellé du bouton d'action dans le menu mobile." }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "description": "Liste ordonnée des sections du portfolio.",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "label", "enabled"],
+        "properties": {
+          "id": { "type": "string", "description": "Identifiant d'ancre HTML unique pour la section." },
+          "type": {
+            "type": "string",
+            "enum": ["hero", "skills", "projects", "experience", "testimonials", "articles", "contact"],
+            "description": "Type de composant de section."
+          },
+          "label": { "type": "string", "description": "Libellé affiché dans le menu de navigation." },
+          "enabled": { "type": "boolean", "description": "Activation ou masquage de la section." }
+        }
+      }
+    },
+    "hero": {
+      "type": "object",
+      "description": "Contenu de la section d'accueil (Hero).",
+      "required": ["badgeText", "badgePulse", "title", "titleHighlight", "subtitle", "ctas", "stats", "showcase"],
+      "properties": {
+        "badgeText": { "type": "string" },
+        "badgePulse": { "type": "boolean" },
+        "title": { "type": "string" },
+        "titleHighlight": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "ctas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "target", "icon", "variant"],
+            "properties": {
+              "label": { "type": "string" },
+              "target": { "type": "string" },
+              "icon": { "type": "string" },
+              "variant": { "type": "string", "enum": ["primary", "ghost"] }
+            }
+          }
+        },
+        "stats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["value", "label"],
+            "properties": {
+              "value": { "type": "string" },
+              "label": { "type": "string" }
+            }
+          }
+        },
+        "showcase": {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": { "type": "string", "enum": ["terminal", "image", "none"] },
+            "image": { "type": "string" },
+            "imageCaption": { "type": "string" },
+            "terminalTitle": { "type": "string" },
+            "terminalTag": { "type": "string" },
+            "terminalLines": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["text", "tone"],
+                "properties": {
+                  "text": { "type": "string" },
+                  "tone": { "type": "string", "enum": ["default", "keyword", "string", "accent", "muted", "number"] }
+                }
+              }
+            },
+            "terminalFooterLeft": { "type": "string" },
+            "terminalFooterRight": { "type": "string" },
+            "floatingBadges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["icon", "title", "subtitle", "accent"],
+                "properties": {
+                  "icon": { "type": "string" },
+                  "title": { "type": "string" },
+                  "subtitle": { "type": "string" },
+                  "accent": { "type": "integer", "enum": [1, 2, 3] }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "required": ["title", "categories"],
+      "properties": {
+        "badgeIcon": { "type": "string" },
+        "badgeText": { "type": "string" },
+        "title": { "type": "string" },
+        "titleHighlight": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "showLevels": { "type": "boolean" },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["title", "items"],
+            "properties": {
+              "icon": { "type": "string" },
+              "badge": { "type": "string" },
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "accent": { "type": "integer", "enum": [1, 2, 3] },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "level", "levelLabel"],
+                  "properties": {
+                    "name": { "type": "string" },
+                    "level": { "type": "integer", "minimum": 0, "maximum": 100 },
+                    "levelLabel": { "type": "string" }
+                  }
+                }
+              },
+              "tags": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "projects": {
+      "type": "object",
+      "required": ["title", "items"],
+      "properties": {
+        "badgeIcon": { "type": "string" },
+        "badgeText": { "type": "string" },
+        "title": { "type": "string" },
+        "titleHighlight": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "layout": { "type": "string", "enum": ["grid-2", "grid-3", "gallery"] },
+        "filtersEnabled": { "type": "boolean" },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" }
+            }
+          }
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["title", "description"],
+            "properties": {
+              "title": { "type": "string" },
+              "category": { "type": "string" },
+              "categoryLabel": { "type": "string" },
+              "description": { "type": "string" },
+              "image": { "type": "string" },
+              "accent": { "type": "integer", "enum": [1, 2, 3] },
+              "tags": { "type": "array", "items": { "type": "string" } },
+              "links": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["label", "url", "icon"],
+                  "properties": {
+                    "label": { "type": "string" },
+                    "url": { "type": "string" },
+                    "icon": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "experience": {
+      "type": "object",
+      "required": ["title", "items"],
+      "properties": {
+        "badgeIcon": { "type": "string" },
+        "badgeText": { "type": "string" },
+        "title": { "type": "string" },
+        "titleHighlight": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["title", "organization", "period", "description"],
+            "properties": {
+              "title": { "type": "string" },
+              "organization": { "type": "string" },
+              "period": { "type": "string" },
+              "description": { "type": "string" },
+              "accent": { "type": "integer", "enum": [1, 2, 3] },
+              "tags": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "testimonials": {
+      "type": "object",
+      "required": ["title", "items"],
+      "properties": {
+        "badgeIcon": { "type": "string" },
+        "badgeText": { "type": "string" },
+        "title": { "type": "string" },
+        "titleHighlight": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["quote", "author", "role"],
+            "properties": {
+              "quote": { "type": "string" },
+              "author": { "type": "string" },
+              "role": { "type": "string" },
+              "avatar": { "type": "string" },
+              "rating": { "type": "number", "minimum": 1, "maximum": 5 }
+            }
+          }
+        }
+      }
+    },
+    "articles": {
+      "type": "object",
+      "required": ["title", "items"],
+      "properties": {
+        "badgeIcon": { "type": "string" },
+        "badgeText": { "type": "string" },
+        "title": { "type": "string" },
+        "titleHighlight": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title", "date", "excerpt"],
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "date": { "type": "string" },
+              "readTime": { "type": "string" },
+              "excerpt": { "type": "string" },
+              "content": { "type": "string" },
+              "image": { "type": "string" },
+              "url": { "type": "string" },
+              "tags": { "type": "array", "items": { "type": "string" } },
+              "accent": { "type": "integer", "enum": [1, 2, 3] }
+            }
+          }
+        }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "required": ["title", "infos", "socials", "form"],
+      "properties": {
+        "badgeIcon": { "type": "string" },
+        "badgeText": { "type": "string" },
+        "title": { "type": "string" },
+        "titleHighlight": { "type": "string" },
+        "intro": { "type": "string" },
+        "socialsTitle": { "type": "string" },
+        "infos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["icon", "label", "value"],
+            "properties": {
+              "icon": { "type": "string" },
+              "label": { "type": "string" },
+              "value": { "type": "string" },
+              "copyable": { "type": "boolean" },
+              "accent": { "type": "integer", "enum": [1, 2, 3] }
+            }
+          }
+        },
+        "socials": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "icon", "url"],
+            "properties": {
+              "label": { "type": "string" },
+              "icon": { "type": "string" },
+              "url": { "type": "string" },
+              "accent": { "type": "integer", "enum": [1, 2, 3] }
+            }
+          }
+        },
+        "form": {
+          "type": "object",
+          "required": ["enabled", "title", "submitLabel"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "title": { "type": "string" },
+            "subtitle": { "type": "string" },
+            "nameLabel": { "type": "string" },
+            "emailLabel": { "type": "string" },
+            "subjectLabel": { "type": "string" },
+            "messageLabel": { "type": "string" },
+            "submitLabel": { "type": "string" },
+            "successMessage": { "type": "string" },
+            "privacyNote": { "type": "string" },
+            "subjects": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["value", "label"],
+                "properties": {
+                  "value": { "type": "string" },
+                  "label": { "type": "string" }
+                }
+              }
+            },
+            "endpoint": { "type": "string" }
+          }
+        }
+      }
+    },
+    "footer": {
+      "type": "object",
+      "required": ["copyright", "showQuickNav", "showBackToTop"],
+      "properties": {
+        "copyright": { "type": "string" },
+        "showQuickNav": { "type": "boolean" },
+        "showBackToTop": { "type": "boolean" }
+      }
+    }
+  }
+}

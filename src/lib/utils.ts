@@ -5,7 +5,7 @@ export function cx(...parts: Array<string | false | null | undefined>): string {
 }
 
 /** Un champ est "rempli" (donc affichable) s'il n'est ni vide ni uniquement des espaces. */
-export function filled(value: unknown): boolean {
+export function filled<T>(value: T | null | undefined): value is NonNullable<T> {
   if (value === null || value === undefined) return false;
   if (typeof value === 'string') return value.trim().length > 0;
   if (Array.isArray(value)) return value.length > 0;

@@ -1,6 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { AlertTriangle, RefreshCw, RotateCcw } from 'lucide-react';
 import { STORAGE_KEY } from '../lib/config-context';
+import Icon from './ui/Icon';
 
 interface Props {
   children: ReactNode;
@@ -49,7 +49,7 @@ export default class ErrorBoundary extends Component<Props, State> {
           <div className="max-w-lg w-full bg-slate-900/95 border border-rose-500/30 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl space-y-6">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0">
-                <AlertTriangle className="w-6 h-6" />
+                <Icon name="alert-triangle" className="w-6 h-6" />
               </div>
               <div className="flex-1">
                 <h1 className="text-xl font-bold text-white tracking-tight">
@@ -83,7 +83,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                 onClick={this.handleResetData}
                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs transition-colors shadow-lg shadow-rose-950/50 cursor-pointer"
               >
-                <RotateCcw className="w-4 h-4" />
+                <Icon name="rotate-ccw" className="w-4 h-4" />
                 <span>Réinitialiser les données</span>
               </button>
 
@@ -93,7 +93,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                 onClick={this.handleReload}
                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-slate-200 font-medium text-xs transition-colors cursor-pointer"
               >
-                <RefreshCw className="w-4 h-4" />
+                <Icon name="refresh-cw" className="w-4 h-4" />
                 <span>Recharger la page</span>
               </button>
             </div>

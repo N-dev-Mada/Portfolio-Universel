@@ -60,7 +60,7 @@ export default function EditorLauncher() {
     if (!isAuth) return;
 
     const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
+      if ((e.ctrlKey || e.metaKey) && e.altKey && (e.key === 'N' || e.key === 'n' || e.code === 'KeyN')) {
         e.preventDefault();
         setOpen((v) => !v);
       }
@@ -80,7 +80,7 @@ export default function EditorLauncher() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        title="Éditeur visuel (Ctrl + Shift + E)"
+        title="Éditeur visuel (Ctrl + Alt + N)"
         aria-label="Ouvrir l'éditeur visuel"
         className={cx(
           'fixed bottom-6 left-6 z-[70] w-11 h-11 rounded-full glass-panel border border-white/10 flex items-center justify-center text-slate-400 hover:text-[rgb(var(--acc-1))] hover:border-[rgb(var(--acc-1)/0.4)] shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer',

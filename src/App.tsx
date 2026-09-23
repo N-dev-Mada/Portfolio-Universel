@@ -17,7 +17,7 @@ function Portfolio() {
   const sections = config.sections.filter((s) => s.enabled);
 
   return (
-    <div className="text-slate-100 relative overflow-x-hidden min-h-dvh flex flex-col">
+    <div className="text-[rgb(var(--text-primary))] relative overflow-x-hidden min-h-dvh flex flex-col">
       {config.theme.ambientGlow && <AmbientBackground />}
       <Navbar />
       <main className="flex-1">

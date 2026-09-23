@@ -1,4 +1,5 @@
 import type { SectionDescriptor } from '../../types/config';
+import Articles from './Articles';
 import Contact from './Contact';
 import Experience from './Experience';
 import Hero from './Hero';
@@ -12,6 +13,7 @@ const MAP = {
   projects: Projects,
   experience: Experience,
   testimonials: Testimonials,
+  articles: Articles,
   contact: Contact,
 } as const;
 

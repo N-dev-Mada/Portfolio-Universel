@@ -1,6 +1,7 @@
 import { useConfig } from '../../../lib/config-context';
 import type {
   AccentIndex,
+  ArticleItem,
   CtaItem,
   ContactInfo,
   ExperienceItem,
@@ -54,6 +55,11 @@ function AccentSelect({
 function HeroEditor() {
   const { config, update } = useConfig();
   const h = config.hero;
+  const activeSections = config.sections.filter((s) => s.enabled);
+  const sectionOptions = activeSections.map((s) => ({
+    value: s.id,
+    label: `${s.label} (#${s.id})`,
+  }));
 
   return (
     <Group title="Accueil (Hero)" icon="home" defaultOpen>
@@ -70,27 +76,45 @@ function HeroEditor() {
         <ListEditor<CtaItem>
           items={h.ctas}
           onChange={(v) => update('hero.ctas', v)}
-          create={() => ({ label: 'Nouveau bouton', target: 'contact', icon: 'arrow-right', variant: 'ghost' })}
+          create={() => ({
+            label: 'Nouveau bouton',
+            target: activeSections[0]?.id || 'contact',
+            icon: 'arrow-right',
+            variant: 'ghost',
+          })}
           titleOf={(i) => i.label}
           addLabel="Ajouter un bouton"
           max={3}
         >
-          {(item, _i, set) => (
-            <>
-              <TextField label="Libellé" value={item.label} onChange={(v) => set({ label: v })} />
-              <TextField label="Section cible" value={item.target} onChange={(v) => set({ target: v })} />
-              <IconPicker label="Icône" value={item.icon} onChange={(v) => set({ icon: v })} />
-              <SelectField
-                label="Style"
-                value={item.variant}
-                onChange={(v) => set({ variant: v })}
-                options={[
-                  { value: 'primary', label: 'Principal (dégradé)' },
-                  { value: 'ghost', label: 'Secondaire (vitré)' },
-                ]}
-              />
-            </>
-          )}
+          {(item, _i, set) => {
+            const ctaOptions = sectionOptions.some((o) => o.value === item.target)
+              ? sectionOptions
+              : item.target
+                ? [{ value: item.target, label: `${item.target} (personnalisé)` }, ...sectionOptions]
+                : [{ value: '', label: '— Sélectionner une section —' }, ...sectionOptions];
+
+            return (
+              <>
+                <TextField label="Libellé" value={item.label} onChange={(v) => set({ label: v })} />
+                <SelectField
+                  label="Section cible"
+                  value={item.target}
+                  onChange={(v) => set({ target: v })}
+                  options={ctaOptions}
+                />
+                <IconPicker label="Icône" value={item.icon} onChange={(v) => set({ icon: v })} />
+                <SelectField
+                  label="Style"
+                  value={item.variant}
+                  onChange={(v) => set({ variant: v })}
+                  options={[
+                    { value: 'primary', label: 'Principal (dégradé)' },
+                    { value: 'ghost', label: 'Secondaire (vitré)' },
+                  ]}
+                />
+              </>
+            );
+          }}
         </ListEditor>
       </div>
 
@@ -350,9 +374,28 @@ function ProjectsEditor() {
             <TextField label="Étiquette affichée" value={item.categoryLabel} onChange={(v) => set({ categoryLabel: v })} />
             <AccentSelect value={item.accent} onChange={(v) => set({ accent: v })} />
             <TagsField label="Technologies / mots-clés" value={item.tags} onChange={(v) => set({ tags: v })} />
+            
+            <div className="space-y-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
+              <span className="block text-[11px] font-semibold uppercase tracking-wide text-slate-300">
+                Liens externes directs (Dépôt & Déploiement)
+              </span>
+              <TextField
+                label="Lien vers le dépôt (ex: GitHub, GitLab)"
+                value={item.repoUrl ?? ''}
+                onChange={(v) => set({ repoUrl: v })}
+                hint="Ajoute automatiquement un bouton « Dépôt / Code source » vers le dépôt Git."
+              />
+              <TextField
+                label="Lien vers le déploiement (ex: Vercel, Netlify, Démo)"
+                value={item.demoUrl ?? ''}
+                onChange={(v) => set({ demoUrl: v })}
+                hint="Ajoute automatiquement un bouton prioritaire « Déploiement / Démo »."
+              />
+            </div>
+
             <div>
               <span className="block text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-2">
-                Liens
+                Autres liens personnalisés
               </span>
               <ListEditor<ProjectLink>
                 items={item.links}
@@ -442,6 +485,71 @@ function TestimonialsEditor() {
             <TextField label="Fonction / entreprise" value={item.role} onChange={(v) => set({ role: v })} />
             <ImageField label="Photo" value={item.avatar} onChange={(v) => set({ avatar: v })} />
             <NumberField label="Note (étoiles)" value={item.rating} onChange={(v) => set({ rating: v })} min={0} max={5} />
+          </>
+        )}
+      </ListEditor>
+    </Group>
+  );
+}
+
+/* ------------------------------ ARTICLES & BLOG ------------------------------ */
+function ArticlesEditor() {
+  const { config, update } = useConfig();
+  const a = config.articles ?? {
+    badgeIcon: 'book-open',
+    badgeText: 'Publications & Blog',
+    title: 'Articles &',
+    titleHighlight: 'Réflexions',
+    subtitle: 'Partages d’expériences, retours techniques et analyses sur le développement web moderne.',
+    items: [],
+  };
+
+  return (
+    <Group title="Articles & Publications" icon="book-open">
+      <IconPicker label="Icône du badge" value={a.badgeIcon} onChange={(v) => update('articles.badgeIcon', v)} />
+      <TextField label="Texte du badge" value={a.badgeText} onChange={(v) => update('articles.badgeText', v)} />
+      <TextField label="Titre" value={a.title} onChange={(v) => update('articles.title', v)} />
+      <TextField label="Titre — partie colorée" value={a.titleHighlight} onChange={(v) => update('articles.titleHighlight', v)} />
+      <TextAreaField label="Sous-titre" value={a.subtitle} onChange={(v) => update('articles.subtitle', v)} />
+
+      <ListEditor<ArticleItem>
+        items={a.items}
+        onChange={(v) => update('articles.items', v)}
+        create={() => ({
+          id: `article-${Date.now()}`,
+          title: 'Nouvel article',
+          date: new Date().toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' }),
+          readTime: '4 min',
+          excerpt: '',
+          content: '',
+          image: '',
+          url: '',
+          tags: ['Web'],
+          accent: 1,
+        })}
+        titleOf={(i) => i.title}
+        addLabel="Ajouter un article"
+        max={15}
+      >
+        {(item, _i, set) => (
+          <>
+            <TextField label="Titre de l'article" value={item.title} onChange={(v) => set({ title: v })} />
+            <div className="grid grid-cols-2 gap-3">
+              <TextField label="Date de parution" value={item.date} onChange={(v) => set({ date: v })} />
+              <TextField label="Temps de lecture" value={item.readTime ?? ''} onChange={(v) => set({ readTime: v })} />
+            </div>
+            <TextAreaField label="Extrait / Résumé" value={item.excerpt} onChange={(v) => set({ excerpt: v })} rows={3} />
+            <TextAreaField
+              label="Contenu complet (optionnel pour lecture modale)"
+              value={item.content ?? ''}
+              onChange={(v) => set({ content: v })}
+              rows={5}
+              hint="Séparez les paragraphes par une ligne vide."
+            />
+            <ImageField label="Image de couverture (URL ou fichier)" value={item.image ?? ''} onChange={(v) => set({ image: v })} />
+            <TextField label="Lien externe (Medium, Substack, Dev.to...)" value={item.url ?? ''} onChange={(v) => set({ url: v })} />
+            <TagsField label="Étiquettes / Tags" value={item.tags ?? []} onChange={(v) => set({ tags: v })} />
+            <AccentSelect value={item.accent ?? 1} onChange={(v) => set({ accent: v })} />
           </>
         )}
       </ListEditor>
@@ -561,6 +669,7 @@ export default function ContentTab() {
       {enabledTypes.has('projects') && <ProjectsEditor />}
       {enabledTypes.has('experience') && <ExperienceEditor />}
       {enabledTypes.has('testimonials') && <TestimonialsEditor />}
+      {enabledTypes.has('articles') && <ArticlesEditor />}
       {enabledTypes.has('contact') && <ContactEditor />}
     </div>
   );

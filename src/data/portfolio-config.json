@@ -1,4 +1,5 @@
 {
+  "$schema": "./portfolio-config.schema.json",
   "version": 1,
   "meta": {
     "title": "Portfolio — Alexandre Laurent | Concepteur Web & Fullstack",
@@ -29,6 +30,7 @@
     { "id": "projets", "type": "projects", "label": "Projets", "enabled": true },
     { "id": "parcours", "type": "experience", "label": "Parcours", "enabled": true },
     { "id": "temoignages", "type": "testimonials", "label": "Témoignages", "enabled": false },
+    { "id": "articles", "type": "articles", "label": "Publications", "enabled": true },
     { "id": "contact", "type": "contact", "label": "Contact", "enabled": true }
   ],
   "hero": {
@@ -146,6 +148,8 @@
         "image": "",
         "accent": 1,
         "tags": ["Next.js 14", "TypeScript", "PostgreSQL", "Prisma", "WebSockets"],
+        "repoUrl": "",
+        "demoUrl": "",
         "links": [
           { "label": "Démo en direct", "url": "", "icon": "external-link" },
           { "label": "Code source", "url": "", "icon": "github" }
@@ -159,6 +163,8 @@
         "image": "",
         "accent": 2,
         "tags": ["React", "Tailwind CSS", "Zustand", "Stripe Elements", "Algolia"],
+        "repoUrl": "",
+        "demoUrl": "",
         "links": [
           { "label": "Démo en direct", "url": "", "icon": "external-link" },
           { "label": "Code source", "url": "", "icon": "github" }
@@ -172,6 +178,8 @@
         "image": "",
         "accent": 3,
         "tags": ["Node.js", "TypeScript", "Redis", "Docker", "OpenAPI 3.0"],
+        "repoUrl": "",
+        "demoUrl": "",
         "links": [
           { "label": "Documentation API", "url": "", "icon": "external-link" },
           { "label": "Code source", "url": "", "icon": "github" }
@@ -185,6 +193,8 @@
         "image": "",
         "accent": 1,
         "tags": ["React", "TypeScript", "Tailwind CSS", "Supabase", "dnd kit"],
+        "repoUrl": "",
+        "demoUrl": "",
         "links": [
           { "label": "Démo en direct", "url": "", "icon": "external-link" },
           { "label": "Code source", "url": "", "icon": "github" }
@@ -253,6 +263,51 @@
         "role": "Head of Product — Digital Horizon",
         "avatar": "",
         "rating": 5
+      }
+    ]
+  },
+  "articles": {
+    "badgeIcon": "book-open",
+    "badgeText": "Publications & Blog",
+    "title": "Articles &",
+    "titleHighlight": "Réflexions Techniques",
+    "subtitle": "Retours d’expériences, bonnes pratiques d’architecture et veilles technologiques sur le développement web moderne.",
+    "items": [
+      {
+        "id": "arch-front-2025",
+        "title": "Architecturer une application React & TypeScript pour durer : Principes & Pièges",
+        "date": "Février 2025",
+        "readTime": "6 min",
+        "excerpt": "Comment organiser ses modules, isoler l'état métier des bibliothèques externes et garantir des performances pérennes sur plusieurs années sans dette technique étouffante.",
+        "content": "La pérennité d'un projet web repose avant tout sur la clarté de ses frontières architecturales.\n\nDans cet article, nous analysons pourquoi la centralisation excessive des états globaux crée des goulots d'étranglement, comment concevoir des composants autonomes et découplés, et quelles stratégies adopter pour préserver la fluidité de rendu même sous forte charge de données.\n\nNous abordons également la gestion défensive des dépendances et l'automatisation des vérifications statiques avec TypeScript strict.",
+        "image": "",
+        "url": "https://dev.to",
+        "tags": ["React", "TypeScript", "Architecture"],
+        "accent": 1
+      },
+      {
+        "id": "optimisation-core-web-vitals",
+        "title": "Optimisation extrême des Core Web Vitals : Atteindre 100/100 sur Lighthouse",
+        "date": "Novembre 2024",
+        "readTime": "8 min",
+        "excerpt": "Guide pas à pas des optimisations critiques : réduction drastique du LCP, neutralisation du CLS et techniques avancées de compression d'actifs vectoriels et raster.",
+        "content": "Optimiser le score de performance d'un site ne se résume pas à compresser quelques images. Il s'agit d'une orchestration minutieuse du cycle critique de rendu du navigateur.\n\nDécouvrez comment éliminer les ressources bloquantes au premier chargement, exploiter les formats modernes WebP/AVIF avec redimensionnement Canvas dynamique, et tirer parti des CSS variables pour réduire la taille des feuilles de style globales.",
+        "image": "",
+        "url": "",
+        "tags": ["Performance", "Web Vitals", "SEO"],
+        "accent": 2
+      },
+      {
+        "id": "design-systems-tokens",
+        "title": "Du Design Token au Composant UI : Construire un système cohérent et accessible",
+        "date": "Septembre 2024",
+        "readTime": "5 min",
+        "excerpt": "Mise en place d'une chaîne fluide entre variables de design (couleurs, rayons, typographies) et composants modulaires conformes aux normes WCAG AA.",
+        "content": "Un design system efficace est un langage commun entre designers et développeurs. Cet article détaille la mise en place d'un modèle mathématique de tokens de couleurs HSL/RGB dynamiques, permettant des transitions de thèmes instantanées sans scintillement et une lisibilité contrastée irréprochable.",
+        "image": "",
+        "url": "",
+        "tags": ["UI/UX", "Tailwind", "Accessibilité"],
+        "accent": 3
       }
     ]
   },

@@ -11,6 +11,7 @@ export type SectionType =
   | 'projects'
   | 'experience'
   | 'testimonials'
+  | 'articles'
   | 'contact';
 
 export interface SectionDescriptor {
@@ -136,6 +137,10 @@ export interface ProjectItem {
   accent: AccentIndex;
   tags: string[];
   links: ProjectLink[];
+  /** Lien direct vers le dépôt (ex: GitHub, GitLab) */
+  repoUrl?: string;
+  /** Lien direct vers le déploiement (ex: démo live, site en ligne) */
+  demoUrl?: string;
 }
 
 export interface ProjectFilter {
@@ -188,6 +193,28 @@ export interface TestimonialsConfig {
   titleHighlight: string;
   subtitle: string;
   items: TestimonialItem[];
+}
+
+export interface ArticleItem {
+  id: string;
+  title: string;
+  date: string;
+  readTime?: string;
+  excerpt: string;
+  content?: string;
+  image?: string;
+  url?: string;
+  tags: string[];
+  accent?: AccentIndex;
+}
+
+export interface ArticlesConfig {
+  badgeIcon: string;
+  badgeText: string;
+  title: string;
+  titleHighlight: string;
+  subtitle: string;
+  items: ArticleItem[];
 }
 
 export interface ContactInfo {
@@ -245,6 +272,7 @@ export interface FooterConfig {
 }
 
 export interface PortfolioConfig {
+  $schema?: string;
   version: number;
   meta: MetaConfig;
   theme: ThemeConfig;
@@ -256,6 +284,7 @@ export interface PortfolioConfig {
   projects: ProjectsConfig;
   experience: ExperienceConfig;
   testimonials: TestimonialsConfig;
+  articles?: ArticlesConfig;
   contact: ContactConfig;
   footer: FooterConfig;
 }

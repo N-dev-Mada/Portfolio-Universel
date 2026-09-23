@@ -120,7 +120,7 @@ export function SelectField<T extends string>({
         onChange={(e) => onChange(e.target.value as T)}
       >
         {options.map((o) => (
-          <option key={o.value} value={o.value} className="bg-slate-950">
+          <option key={o.value} value={o.value} className="bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))]">
             {o.label}
           </option>
         ))}

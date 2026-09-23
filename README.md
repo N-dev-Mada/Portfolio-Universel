@@ -1,51 +1,64 @@
-# Portfolio Universel (Visual Portfolio Builder)
+# Portfolio Universel (Visual Portfolio Builder) — Suite N-product
 
 [![React 19](https://img.shields.io/badge/React-19.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict_Mode-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite 6](https://img.shields.io/badge/Vite-6.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.x-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![i18n](https://img.shields.io/badge/i18n-FR%20%7C%20EN-10B981?style=for-the-badge)](https://github.com/)
 [![Suite](https://img.shields.io/badge/Suite-N--product-7C3AED?style=for-the-badge)](https://github.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-10B981?style=for-the-badge)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-> Une Single Page Application (SPA) moderne, performante et hautement modulaire conçue avec **React 19**, **Vite** et **Tailwind CSS v4**. Elle permet de générer, prévisualiser et personnaliser un portfolio professionnel complet en temps réel via un éditeur visuel no-code intuitif et un fichier de configuration JSON centralisé.
+> Une Single Page Application (SPA) professionnelle, ultra-rapide et modulaire conçue avec **React 19**, **Vite** et **Tailwind CSS v4**. Elle permet de prévisualiser, personnaliser et déployer un portfolio de calibre international en temps réel grâce à son éditeur visuel intégré sans code (**Visual Portfolio Builder**) ou via un fichier de configuration JSON unique.
 
 ---
 
 ### 🌟 Origine & Écosystème
 
-- **Développeur** : Développé avec soin par **N-dev-Mada**.
-- **Écosystème** : Ce projet constitue le **second produit officiel de la suite N-product**, dédiée à la conception d'outils web modernes, robustes et orientés expérience utilisateur.
+- **Développeur & Architecte** : Développé avec rigueur et passion par **N-dev-Mada**.
+- **Écosystème** : Ce projet constitue le **second produit officiel de la suite N-product**, dédiée à la création d'outils web modernes, robustes, zéro-dette technique et orientés expérience utilisateur.
 
 ---
 
-## ✨ Fonctionnalités Clés
+## ✨ Fonctionnalités Majeures
 
-### 🎨 1. Éditeur Visuel Intégré (WYSIWYG / No-Code)
-- **Personnalisation en direct** : Ajustez les thèmes de couleurs (palettes d'accentuation prédéfinies), les typographies Google Fonts chargées dynamiquement, le rayon des bordures et les halos d'arrière-plan avec répercussion instantanée sur le DOM.
-- **Gestion des sections** : Activez, désactivez, renommez et réorganisez les sections (Accueil, À propos, Compétences, Projets, Expériences, Témoignages, Contact).
-- **Modèles de profil (Presets)** : Basculez en un clic entre différents archétypes professionnels (Développeur Fullstack / Tech, Designer Créatif, Consultant Business, Chercheur Académique).
-- **Import / Export JSON** : Téléchargez votre configuration sur-mesure au format `portfolio-config.json` ou chargez un fichier existant sans recompiler l'application.
+### 🌐 1. Support Multilingue Natif (Commutateur FR / EN)
+- **Commutateur instantané** : Basculez l'interface à tout moment via le sélecteur segmenté responsive (FR / EN) présent dans la barre de navigation et dans l'Éditeur visuel.
+- **Propagation complète** : Traduction automatique de tous les libellés fixes (navigation, boutons d'action, filtres de catégories, messages Toast, modales et formulaires).
+- **SEO & Accessibilité** : Synchronisation temps réel de l'attribut DOM `<html lang="fr">` ou `<html lang="en">` ainsi que de `meta.lang`.
 
-### ⚡ 2. Performance & Compression d'Images Intelligente
-- **Traitement côté client** : Optimisation automatique des images téléversées via l'API HTML5 Canvas.
-- **Redimensionnement proportionnel** : Plafond strict à 800×800 px tout en conservant le ratio d'aspect.
-- **Encodage WebP / JPEG** : Compression automatique réduisant la taille des assets sous le seuil des **150 Ko** (contre plusieurs mégaoctets pour des photos brutes), prévenant tout dépassement du quota de stockage de 5 Mo du `localStorage`.
-- **Support vectoriel** : Préservation native des fichiers SVG sans altération.
+### 🔄 2. Restauration d'Usine Sécurisée (N-Product Factory Reset)
+- **Réinitialisation en 1 clic** : Réinjecte la configuration d'origine officielle issue de `src/data/portfolio-config.json` et purge les caches obsolètes du `localStorage`.
+- **Dialogue de confirmation explicite** : Protection anti-fausse manipulation avec modale d'avertissement dédiée, rappel de sécurité pour l'export JSON préalable et notification Toast traduite.
 
-### ✉️ 3. Formulaire de Contact Intelligent & Hybride
-- **Validation stricte** : Contrôle syntaxique rigoureux de l'adresse e-mail selon les normes RFC (`EMAIL_REGEX`) avant envoi.
-- **Support d'API distante** : Si un endpoint est configuré (`contact.form.endpoint` type Formspree, Baserow, API REST maison), le formulaire transmet les données via une requête HTTP `POST` JSON avec gestion des états de chargement et d'erreur.
-- **Bascule dynamique `mailto:`** : Si aucun backend n'est renseigné, le formulaire résout automatiquement l'e-mail du destinataire (depuis les coordonnées ou réseaux du profil) et déclenche l'application de messagerie de l'utilisateur avec l'objet et le message intégralement pré-remplis.
+### 📖 3. Section Éditoriale / Blog Immersive
+- **Publications & Réflexions** : Intégration d'un module complet pour articles techniques, notes de recherche ou études de cas.
+- **Filtrage par tags** : Navigation fluide par mots-clés (`#React`, `#TypeScript`, `#Architecture`).
+- **Modale de lecture fluide** : Fenêtre de lecture immersive (`role="dialog"`, fermeture via Échap ou clic externe, support des paragraphes formatés) et redirection externe élégante.
 
-### 🛡️ 4. Résilience & Sécurité Renforcée (P0 / P1 / P2)
-- **Validation défensive des données** : Sanitisation et fusion récursive (`deepMerge`) avec valeurs de repli par défaut pour éviter tout plantage suite à une altération du cache local.
-- **Gestion du quota de stockage** : Détection proactive de l'espace disponible et des erreurs `QuotaExceededError`.
-- **ErrorBoundary d'urgence** : En cas d'erreur de rendu critique, un écran de secours offre un bouton de réinitialisation sécurisée qui restaure la configuration d'usine sans bloquer le visiteur.
-- **Verrouillage de l'éditeur** : Protection de l'interface d'édition pour les visiteurs publics en production.
+### 📦 4. Export HTML Autonome « Zero-Build »
+- **Autonomie totale** : Téléchargez d'un clic un fichier HTML complet (`portfolio-standalone.html`) contenant le balisage, les styles Tailwind CSS, les polices Google Fonts et un script minimaliste d'interaction.
+- **Prêt pour l'hébergement** : Déployable immédiatement sur GitHub Pages, un hébergeur mutualisé ou consultable en local sans aucune dépendance ni compilation.
+- **Réimportabilité** : La configuration JSON complète est directement embarquée dans le fichier HTML autonome, permettant sa réimportation ultérieure dans le Builder.
 
-### 🚀 5. Spy Scroll Fluide & Zéro Layout Thrashing
-- **Navigation 60 FPS** : Remplacement des anciens écouteurs d'événements `scroll` synchrones par une détection passive basée sur l'API native `IntersectionObserver`.
-- **Aucun recalcul de géométrie** : Élimination des appels répétitifs à `offsetTop` et `offsetHeight`, assurant une fluidité absolue même sur les périphériques mobiles d'entrée de gamme.
+### 🎨 5. Éditeur Visuel WYSIWYG Complet
+- **Personnalisation en direct** : Palettes d'accentuation prédéfinies, polices Google Fonts chargées à la volée, rayons de bordure et halos d'ambiance avec répercussion instantanée.
+- **Gestion des sections** : Glissez-déposez pour réordonner, activez/désactivez les rubriques (Accueil, Compétences, Projets, Parcours, Témoignages, Publications, Contact).
+- **Modèles de profil (Presets)** : Basculez en un clic entre profils types (Développeur Fullstack, Designer UI/UX, Consultant Tech, Chercheur).
+- **Import / Export JSON** : Téléchargement et réinjection directe du fichier `portfolio-config.json`.
+
+### ⚡ 6. Compression d'Images Intelligente Côté Client
+- **Optimisation Canvas HTML5** : Redimensionnement automatique sous le plafond strict de 800×800 px.
+- **Encodage WebP / JPEG** : Compression réduisant le poids des images sous **150 Ko**, prévenant tout dépassement de quota du `localStorage` (5 Mo).
+- **Support SVG** : Préservation native des fichiers vectoriels SVG sans pixellisation.
+
+### ✉️ 7. Formulaire de Contact Intelligent & Hybride
+- **Validation stricte** : Vérification syntaxique de l'adresse e-mail selon les normes RFC (`EMAIL_REGEX`).
+- **Mode API REST** : Connexion transparente avec Formspree, Baserow ou votre propre backend via requête `POST` JSON.
+- **Bascule dynamique `mailto:`** : Si aucun endpoint n'est renseigné, le formulaire résout automatiquement l'e-mail du profil et pré-remplit l'application de messagerie cliente.
+
+### 🚀 8. Performance & Navigation 60 FPS
+- **Spy Scroll optimisé** : Détection passive basée sur l'API native `IntersectionObserver` sans aucun recalcul de géométrie synchrone (`offsetTop`/`offsetHeight`).
+- **Architecture Zero-Slop** : Conception rigoureuse respectant les règles d'accessibilité WCAG AA, animations Motion fluides et typographies soignées.
 
 ---
 
@@ -55,36 +68,35 @@
 |---|---|---|
 | **React** | `19.0.x` | Librairie d'interface utilisateur réactive |
 | **TypeScript** | `5.7.x` | Typage statique strict et intégrité du code |
-| **Vite** | `6.2.x` | Environnement de développement ultra-rapide et bundler |
-| **Tailwind CSS** | `4.1.x` | Framework utilitaire CSS haute performance |
+| **Vite** | `6.2.x` | Environnement de développement et bundler de production |
+| **Tailwind CSS** | `4.1.x` | Moteur de styles utilitaire nouvelle génération |
 | **Motion** | `12.23.x` | Animations fluides et transitions d'interface |
-| **Lucide React** | `0.546.x` | Bibliothèque d'icônes vectorielles cohérente |
+| **Lucide React** | `0.546.x` | Iconographie vectorielle cohérente et légère |
 
 ---
 
 ## 🔐 Contrôle d'Accès & Variables d'Environnement
 
-L'éditeur visuel est verrouillé par défaut en production afin de ne pas exposer les commandes d'administration aux visiteurs lambda.
+L'éditeur visuel est verrouillé par défaut en production afin d'offrir une expérience visiteur pure et sécurisée.
 
-### 1. Configuration via `.env`
+### 1. Configuration `.env`
 
-Créez ou modifiez le fichier `.env` à la racine :
+Consultez `.env.example` et configurez votre fichier `.env` :
 
 ```env
 # Autoriser ou masquer globalement l'éditeur visuel
 VITE_ENABLE_EDITOR=true
 ```
 
-- Si `VITE_ENABLE_EDITOR=false` : L'éditeur visuel (bouton flottant et raccourci clavier `Ctrl + Shift + E`) est totalement désactivé.
-- En mode développement (`npm run dev`), l'éditeur reste accessible par défaut pour faciliter la personnalisation.
+- Si `VITE_ENABLE_EDITOR=false` : L'éditeur visuel (bouton flottant et raccourci `Ctrl + Alt + N`) est masqué en production.
+- En développement (`npm run dev`), l'éditeur reste accessible pour faciliter la création.
 
 ### 2. Accès Administrateur par URL & Persistance de Session
 
-En production avec l'éditeur masqué, vous pouvez y accéder directement via l'URL :
-
-- **Activer l'accès** : Ajoutez le paramètre `?admin=true` ou `?edit=true` à votre URL (ex. `https://mon-portfolio.com/?admin=true`).
-- **Persistance en session** : Dès détection du paramètre, l'autorisation est enregistrée dans le `sessionStorage` (`vpb:editor_authorized`). Vous pouvez naviguer sur le site ou recharger la page sans perdre l'accès à l'éditeur.
-- **Révocation manuelle** : Ajoutez `?admin=false` ou `?edit=false` pour clore la session d'édition.
+En production avec l'éditeur masqué, le propriétaire peut déverrouiller l'interface d'édition :
+- **Activer l'accès** : Ajoutez le paramètre `?admin=true` ou `?edit=true` à l'URL (ex. `https://mon-portfolio.com/?admin=true`).
+- **Persistance en session** : L'autorisation est stockée dans le `sessionStorage` (`vpb:editor_authorized`). Vous pouvez naviguer ou recharger la page sans perdre l'accès.
+- **Révocation** : Ajoutez `?admin=false` ou `?edit=false` pour refermer la session d'administration.
 
 ---
 
@@ -98,7 +110,7 @@ En production avec l'éditeur masqué, vous pouvez y accéder directement via l'
 
 1. **Cloner le dépôt :**
    ```bash
-   git clone https://github.com/votre-nom/portfolio-universel.git
+   git clone https://github.com/N-dev-Mada/Portfolio-Universel.git
    cd portfolio-universel
    ```
 
@@ -111,7 +123,7 @@ En production avec l'éditeur masqué, vous pouvez y accéder directement via l'
    ```bash
    npm run dev
    ```
-   L'application est disponible sur `http://localhost:3000`.
+   L'application est accessible sur `http://localhost:3000`.
 
 4. **Vérification TypeScript & Linting :**
    ```bash
@@ -122,75 +134,69 @@ En production avec l'éditeur masqué, vous pouvez y accéder directement via l'
    ```bash
    npm run build
    ```
-   Les fichiers statiques optimisés seront générés dans le dossier `dist/`.
+   Les fichiers statiques optimisés sont générés dans le répertoire `dist/`.
 
 ---
 
-## 📁 Structure du Projet & Fichier de Configuration
+## 📁 Architecture du Projet
 
 ```
-├── .env.example                       # Modèle des variables d'environnement
-├── index.html                         # Point d'entrée HTML principal
-├── package.json                       # Scripts et dépendances optimisées
+├── .env.example                       # Variables d'environnement documentées
+├── index.html                         # Point d'entrée HTML avec métadonnées
+├── metadata.json                      # Métadonnées de l'application
+├── package.json                       # Scripts et dépendances
 ├── tsconfig.json                      # Configuration TypeScript en mode strict
 ├── vite.config.ts                     # Configuration Vite et Tailwind CSS v4
 └── src/
-    ├── App.tsx                        # Composant racine avec ErrorBoundary et Providers
+    ├── App.tsx                        # Composant racine avec Providers et ErrorBoundary
     ├── main.tsx                       # Point de montage ReactDOM
-    ├── index.css                      # Thème global, styles CSS et variables d'accent
-    ├── vite-env.d.ts                  # Typage strict de l'environnement Vite
+    ├── index.css                      # Thème global, variables d'accent et styles
+    ├── vite-env.d.ts                  # Typage des variables d'environnement
     ├── data/
     │   └── portfolio-config.json      # ⭐️ Source de vérité centrale du contenu
     ├── types/
     │   └── config.ts                  # Schémas et interfaces TypeScript
     ├── lib/
-    │   ├── config-context.tsx         # Contexte global, synchronisation et persistance
-    │   ├── fonts.ts                   # Chargement dynamique des Google Fonts
-    │   ├── themes.ts                  # Définition des palettes de couleurs
-    │   ├── presets.ts                 # Profils préconfigurés (Tech, Créatif, etc.)
-    │   └── utils.ts                   # Utilitaires (compression d'image, scroll, etc.)
+    │   ├── config-context.tsx         # Contexte global, persistance et reset
+    │   ├── export.ts                  # Générateur HTML autonome Zero-Build
+    │   ├── fonts.ts                   # Injection dynamique Google Fonts
+    │   ├── i18n.ts                    # Dictionnaire de traduction FR / EN
+    │   ├── presets.ts                 # Profils métiers préconfigurés
+    │   ├── themes.ts                  # Palettes de couleurs et rayons d'arrondis
+    │   ├── utils.ts                   # Compression d'images Canvas, scroll, helpers
+    │   └── validation.ts              # Validation défensive de la configuration
     └── components/
         ├── layout/                    # Navbar, Footer, AmbientBackground
-        ├── sections/                  # Hero, Skills, Projects, Experience, Contact…
-        ├── ui/                        # Icon (Lucide), Toast, Reveal, ErrorBoundary
-        └── editor/                    # Panneau de contrôle et champs d'édition
+        ├── sections/                  # Hero, Skills, Projects, Experience, Articles, Testimonials, Contact
+        ├── ui/                        # Icon (Lucide), LanguageSwitcher, Toast, Reveal, ErrorBoundary
+        └── editor/                    # Visual Portfolio Builder (onglets, champs, modals)
 ```
-
-### 📄 Le fichier `src/data/portfolio-config.json`
-
-Tout le contenu du site découle de ce fichier unique :
-- **`identity`** : Nom, prénom, titre professionnel, avatar, bio courte.
-- **`theme`** : Palette active (`preset`), police d'écriture (`font`), arrondis (`radius`), lueur d'ambiance (`ambientGlow`).
-- **`sections`** : Ordre d'affichage, activation et labels des rubriques de navigation.
-- **`hero`, `skills`, `projects`, `experience`, `testimonials`, `contact`** : Données détaillées de chaque section.
-
-> **💡 Règle de masquage automatique :** Tout champ textuel vide (`""`) ou tableau vide (`[]`) désactive et masque automatiquement le composant correspondant sur le site, assurant un rendu toujours impeccable sans code superflu.
 
 ---
 
-## 🚀 Déploiement Automatique
+## ☁️ Guides de Déploiement
 
-L'application étant une Single Page Application (SPA) optimisée par Vite, elle peut être déployée en quelques clics sur les plateformes d'hébergement modernes.
+L'application étant une Single Page Application (SPA) optimisée, elle se déploie instantanément sur toutes les plateformes modernes.
 
-### ⚡ Déploiement sur Vercel
+### ⚡ Vercel
 
-1. Connectez votre compte **Vercel** à votre dépôt GitHub.
-2. Importez le projet `Portfolio-Universel`. Vercel détectera automatiquement l'environnement Vite :
+1. Liez votre compte GitHub à **Vercel** et importez le dépôt.
+2. Paramètres détectés :
    - **Framework Preset** : Vite
    - **Build Command** : `npm run build`
    - **Output Directory** : `dist`
-3. Configurez les variables d'environnement (*Environment Variables*) :
-   - `VITE_ENABLE_EDITOR` = `false` (recommandé pour un déploiement public) ou `true`.
-4. Cliquez sur **Deploy**. Chaque `git push` sur la branche principale déclenchera un build automatique.
+3. Définissez la variable d'environnement :
+   - `VITE_ENABLE_EDITOR` = `false` (recommandé pour la vitrine publique).
+4. Cliquez sur **Deploy**. Chaque `git push` déclenchera un déploiement continu.
 
-### 🌐 Déploiement sur Netlify
+### 🌐 Netlify
 
-1. Créez un nouveau site depuis Git sur **Netlify**.
-2. Définissez les paramètres de build :
+1. Créez un nouveau site depuis GitHub sur **Netlify**.
+2. Paramètres de compilation :
    - **Build command** : `npm run build`
    - **Publish directory** : `dist`
-3. Ajoutez la variable d'environnement `VITE_ENABLE_EDITOR` dans *Site configuration > Environment variables*.
-4. **Gestion du routage SPA** : Pour éviter les erreurs 404 lors du rafraîchissement des sous-pages, créez un fichier `public/_redirects` contenant la règle suivante :
+3. Configurez la variable `VITE_ENABLE_EDITOR` dans *Site configuration > Environment variables*.
+4. **Règles SPA (Redirection)** : Pour garantir le bon fonctionnement des URLs profondes, créez un fichier `public/_redirects` contenant :
    ```text
    /*    /index.html   200
    ```
@@ -200,5 +206,5 @@ L'application étant une Single Page Application (SPA) optimisée par Vite, elle
 ## 🤝 Crédits & Licence
 
 - **Conception & Développement** : Réalisé par **N-dev-Mada**.
-- **Écosystème** : Membre de la suite **N-product**.
-- **Licence** : Ce projet est sous licence [MIT](LICENSE). Vous êtes libre de l'utiliser, le modifier et le déployer pour vos besoins personnels et professionnels.
+- **Écosystème** : Produit officiel de la suite **N-product**.
+- **Licence** : Ce projet est sous licence [MIT](LICENSE). Libre d'utilisation pour vos besoins personnels et commerciaux.
